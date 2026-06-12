@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Entry {
+  id          String    @id @default(cuid())
+  slug        String
+  title       String
+  body        String    @default("")
+  collection  String    @default("blog")
+  status      String    @default("draft")
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([collection, slug])
+  @@index([collection, status, publishedAt])
+}

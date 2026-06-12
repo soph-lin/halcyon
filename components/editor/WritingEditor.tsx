@@ -105,7 +105,7 @@ export function WritingEditor({
         <LexicalFontSizeShortcutPlugin onDirty={markDirty} />
         <FloatingToolbarPortal isOpen={isToolbarOpen} onDirty={markDirty} />
 
-        <div className="writing-editor-sheet overflow-hidden rounded-sm shadow-[0_1px_2px_rgba(61,43,31,0.06),0_12px_40px_rgba(61,43,31,0.12)]">
+        <div className="writing-editor-sheet rounded-sm shadow-[0_1px_2px_rgba(61,43,31,0.06),0_12px_40px_rgba(61,43,31,0.12)]">
           <header className="editor-gutter border-b border-[var(--editor-rule)] pb-4 pt-8 sm:pt-10">
             <p className="mb-3 font-heading text-[0.6875rem] uppercase tracking-[0.28em] text-[var(--editor-muted)]">
               Draft

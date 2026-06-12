@@ -160,8 +160,18 @@ export function LexicalSlashMenuPlugin({ onDirty }: LexicalSlashMenuPluginProps)
           return null;
         }
 
+        const rect = anchorElementRef.current.getBoundingClientRect();
+
         return createPortal(
-          <div className="editor-slash-menu">
+          <div
+            className="editor-slash-menu editor-slash-menu-portal"
+            style={{
+              position: "fixed",
+              top: rect.bottom + 4,
+              left: rect.left,
+              minWidth: Math.max(rect.width, 11 * 16),
+            }}
+          >
             <p className="editor-slash-menu-label">Blocks</p>
             <ul className="editor-slash-menu-list" role="listbox">
               {menuOptions.map((option, index) => {
@@ -185,7 +195,7 @@ export function LexicalSlashMenuPlugin({ onDirty }: LexicalSlashMenuPluginProps)
               })}
             </ul>
           </div>,
-          anchorElementRef.current,
+          document.body,
         );
       }}
     />

@@ -1,29 +1,38 @@
-"use client";
+import Link from "next/link";
 
-import { WritingEditor } from "@/components/editor/WritingEditor";
-import type { EditorSavePayload } from "@/lib/editor/types";
+import { SiteNav } from "@/components/SiteNav";
+import { COLLECTION_KEYS, getCollectionMeta } from "@/lib/collections";
 
 export default function Home() {
-  const handleSave = async (payload: EditorSavePayload) => {
-    // Dev-only — wire to server actions once DB exists.
-    console.log("Editor save:", payload);
-  };
-
   return (
-    <div className="editor-dev-shell min-h-full py-10 sm:py-16">
-      <div className="mx-auto mb-8 max-w-[42rem] px-6">
-        <p className="font-heading text-[0.6875rem] uppercase tracking-[0.24em] text-[var(--editor-muted)]">
-          Editor preview
-        </p>
-        <p className="mt-2 text-sm text-[var(--editor-muted)]">
-          Temporary dev surface — will move to admin once the editor is done.
-        </p>
-      </div>
+    <div className="min-h-full">
+      <SiteNav active="home" />
 
-      <WritingEditor
-        placeholder="Start with a thought, a paragraph, or paste from Docs…"
-        onSave={handleSave}
-      />
+      <main className="mx-auto max-w-[42rem] px-6 py-10 sm:py-14">
+        <h1 className="font-heading text-3xl tracking-tight text-[var(--foreground)]">
+          Halcyon
+        </h1>
+        <p className="mt-3 text-[var(--editor-muted)]">
+          Personal writing — blog posts and little library notes.
+        </p>
+
+        <ul className="mt-10 space-y-3 border-t border-[var(--editor-rule)] pt-6">
+          {COLLECTION_KEYS.map((key) => {
+            const collection = getCollectionMeta(key);
+
+            return (
+              <li key={key}>
+                <Link
+                  href={collection.href}
+                  className="text-base text-[var(--foreground)] transition-colors hover:text-[var(--editor-accent)]"
+                >
+                  {collection.title}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </main>
     </div>
   );
 }

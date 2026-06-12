@@ -6,7 +6,7 @@ import { sanitizeBodyHtml } from "@/lib/sanitize";
 export function getEditorHtml(editor: LexicalEditor): string {
   let html = "";
 
-  editor.getEditorState().read(() => {
+  editor.read(() => {
     html = sanitizeBodyHtml($generateHtmlFromNodes(editor, null));
   });
 

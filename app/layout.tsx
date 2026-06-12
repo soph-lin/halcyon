@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Playfair_Display } from "next/font/google";
 
+import { AdminEditorProvider } from "@/components/admin/AdminEditorContext";
+
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -30,7 +32,9 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${garamond.variable} h-full antialiased`}
     >
-      <body className="min-h-full font-body">{children}</body>
+      <body className="min-h-full font-body">
+        <AdminEditorProvider>{children}</AdminEditorProvider>
+      </body>
     </html>
   );
 }
