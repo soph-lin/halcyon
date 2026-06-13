@@ -1,6 +1,6 @@
 import "dotenv/config";
 
-import { createPrismaClient } from "../lib/create-prisma-client";
+import { createPrismaClient } from "../lib/db/create-prisma-client";
 
 const prisma = createPrismaClient();
 

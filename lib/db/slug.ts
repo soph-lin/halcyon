@@ -1,5 +1,5 @@
 import type { CollectionKey } from "@/lib/collections";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/db/prisma";
 
 export function slugify(title: string): string {
   const base = title

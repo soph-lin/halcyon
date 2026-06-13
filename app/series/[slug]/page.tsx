@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { SiteNav } from "@/components/SiteNav";
-import { getPublishedSeries } from "@/lib/series";
+import { getPublishedSeries } from "@/lib/db/series";
 
 type SeriesPageProps = {
   params: Promise<{ slug: string }>;

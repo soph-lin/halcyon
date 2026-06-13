@@ -3,8 +3,8 @@
 import { revalidatePath } from "next/cache";
 
 import { isAdmin } from "@/lib/admin";
-import { prisma } from "@/lib/prisma";
-import { uniqueSlugForSeries } from "@/lib/slug";
+import { prisma } from "@/lib/db/prisma";
+import { uniqueSlugForSeries } from "@/lib/db/slug";
 
 export type SeriesActionResult =
   | { ok: true; slug: string; id: string }

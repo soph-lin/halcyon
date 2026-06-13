@@ -9,7 +9,7 @@ import {
   entryDisplayDate,
   formatEntryDate,
   listPublishedEntries,
-} from "@/lib/entries";
+} from "@/lib/db/entries";
 
 type CollectionPageProps = {
   params: Promise<{ collection: string }>;

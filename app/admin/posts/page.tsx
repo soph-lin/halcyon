@@ -4,11 +4,11 @@ import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { SiteNav } from "@/components/SiteNav";
 import { isAdmin } from "@/lib/admin";
 import { COLLECTIONS, COLLECTION_KEYS } from "@/lib/collections";
-import { listAllEntriesForAdmin } from "@/lib/entries";
+import { listAllEntriesForAdmin } from "@/lib/db/entries";
 import {
   getSeriesMembershipsByEntryIds,
   listAllSeriesDetailsForAdmin,
-} from "@/lib/series";
+} from "@/lib/db/series";
 
 export default async function AdminPostsPage() {
   if (!(await isAdmin())) {

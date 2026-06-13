@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { isAdmin } from "@/lib/admin";
-import { setProfileImageUrl } from "@/lib/site-settings";
+import { setProfileImageUrl } from "@/lib/db/site-settings";
 
 const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = new Set([

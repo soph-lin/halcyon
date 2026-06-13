@@ -1,4 +1,4 @@
-import { createPrismaClient } from "@/lib/create-prisma-client";
+import { createPrismaClient } from "@/lib/db/create-prisma-client";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: ReturnType<typeof createPrismaClient> | undefined;

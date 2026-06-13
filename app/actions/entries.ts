@@ -4,8 +4,8 @@ import { revalidatePath } from "next/cache";
 
 import { isAdmin } from "@/lib/admin";
 import { isCollectionKey, type CollectionKey } from "@/lib/collections";
-import { prisma } from "@/lib/prisma";
-import { uniqueSlugForCollection } from "@/lib/slug";
+import { prisma } from "@/lib/db/prisma";
+import { uniqueSlugForCollection } from "@/lib/db/slug";
 
 export type SaveEntryInput = {
   mode: "create" | "edit";

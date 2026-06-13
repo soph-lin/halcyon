@@ -4,7 +4,7 @@ import { ProfileAvatar } from "@/components/ProfileAvatar";
 import { SiteNav } from "@/components/SiteNav";
 import { isAdmin } from "@/lib/admin";
 import { COLLECTION_KEYS, getCollectionMeta } from "@/lib/collections";
-import { getSiteSettings } from "@/lib/site-settings";
+import { getSiteSettings } from "@/lib/db/site-settings";
 
 export default async function Home() {
   const [settings, admin] = await Promise.all([getSiteSettings(), isAdmin()]);

@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { SiteNav } from "@/components/SiteNav";
-import { listPublishedSeries } from "@/lib/series";
+import { listPublishedSeries } from "@/lib/db/series";
 
 export default async function SeriesIndexPage() {
   const series = await listPublishedSeries();

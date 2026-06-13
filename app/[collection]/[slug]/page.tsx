@@ -12,8 +12,8 @@ import {
   entryDisplayDate,
   formatEntryDate,
   getPublishedEntry,
-} from "@/lib/entries";
-import { getEntrySeriesNav } from "@/lib/series";
+} from "@/lib/db/entries";
+import { getEntrySeriesNav } from "@/lib/db/series";
 
 type EntryPageProps = {
   params: Promise<{ collection: string; slug: string }>;

@@ -1,5 +1,5 @@
 import { isCollectionKey } from "@/lib/collections";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/db/prisma";
 import type {
   AdminSeriesDetail,
   EntrySeriesMembership,
