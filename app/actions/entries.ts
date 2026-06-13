@@ -19,6 +19,8 @@ export type SaveEntryResult =
   | { ok: true; collection: CollectionKey; slug: string }
   | { ok: false; error: string };
 
+export type DeleteEntryResult = { ok: true } | { ok: false; error: string };
+
 function revalidateEntryPaths(collection: string, slug: string) {
   revalidatePath(`/${collection}`);
   revalidatePath(`/${collection}/${slug}`);
@@ -102,5 +104,40 @@ export async function saveEntry(input: SaveEntryInput): Promise<SaveEntryResult>
   } catch (error) {
     console.error("saveEntry failed:", error);
     return { ok: false, error: "Failed to save entry" };
+  }
+}
+
+export async function deleteEntry(input: {
+  entryId: string;
+  collection: string;
+  slug: string;
+}): Promise<DeleteEntryResult> {
+  if (!(await isAdmin())) {
+    return { ok: false, error: "Unauthorized" };
+  }
+
+  if (!isCollectionKey(input.collection)) {
+    return { ok: false, error: "Invalid collection" };
+  }
+
+  try {
+    const existing = await prisma.entry.findUnique({
+      where: { id: input.entryId },
+    });
+
+    if (!existing) {
+      return { ok: false, error: "Entry not found" };
+    }
+
+    await prisma.entry.delete({
+      where: { id: input.entryId },
+    });
+
+    revalidateEntryPaths(existing.collection, existing.slug);
+
+    return { ok: true };
+  } catch (error) {
+    console.error("deleteEntry failed:", error);
+    return { ok: false, error: "Failed to delete entry" };
   }
 }

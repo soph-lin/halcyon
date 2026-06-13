@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { EditorDefaults } from "@/components/editor/admin/EditorDefaults";
+import { EntryDeleteButton } from "@/components/editor/admin/EntryDeleteButton";
 import { EntryEditButton } from "@/components/editor/admin/EntryEditButton";
 import { EntryBody } from "@/components/EntryBody";
 import { SiteNav } from "@/components/SiteNav";
@@ -50,13 +51,22 @@ export default async function EntryPage({ params }: EntryPageProps) {
             <h1 className="font-heading text-3xl tracking-tight text-[var(--foreground)] sm:text-4xl">
               {entry.title}
             </h1>
-            <EntryEditButton
-              id={entry.id}
-              collection={collectionParam}
-              slug={entry.slug}
-              title={entry.title}
-              body={entry.body}
-            />
+            <div className="flex shrink-0 items-start gap-2">
+              <EntryEditButton
+                id={entry.id}
+                collection={collectionParam}
+                slug={entry.slug}
+                title={entry.title}
+                body={entry.body}
+              />
+              <EntryDeleteButton
+                id={entry.id}
+                collection={collectionParam}
+                slug={entry.slug}
+                title={entry.title}
+                redirectTo={collection.href}
+              />
+            </div>
           </div>
           <time
             dateTime={entryDisplayDate(entry).toISOString()}

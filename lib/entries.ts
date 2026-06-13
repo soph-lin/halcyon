@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 
 export type PublishedEntryListItem = Pick<
   Entry,
-  "slug" | "title" | "publishedAt" | "createdAt"
+  "id" | "slug" | "title" | "publishedAt" | "createdAt"
 >;
 
 export async function listPublishedEntries(
@@ -17,6 +17,7 @@ export async function listPublishedEntries(
       status: "published",
     },
     select: {
+      id: true,
       slug: true,
       title: true,
       publishedAt: true,

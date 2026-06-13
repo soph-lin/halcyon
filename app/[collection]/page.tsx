@@ -1,8 +1,9 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { EditorDefaults } from "@/components/editor/admin/EditorDefaults";
+import { CollectionEntryRow } from "@/components/editor/admin/CollectionEntryRow";
 import { SiteNav } from "@/components/SiteNav";
+import { isAdmin } from "@/lib/admin";
 import { getCollectionMeta, isCollectionKey } from "@/lib/collections";
 import {
   entryDisplayDate,
@@ -26,7 +27,10 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
   }
 
   const collection = getCollectionMeta(collectionParam);
-  const entries = await listPublishedEntries(collectionParam);
+  const [entries, admin] = await Promise.all([
+    listPublishedEntries(collectionParam),
+    isAdmin(),
+  ]);
 
   return (
     <div className="min-h-full">
@@ -42,23 +46,15 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
           <p className="mt-8 text-[var(--editor-muted)]">No entries yet.</p>
         ) : (
           <ul className="mt-8 space-y-3 border-t border-[var(--editor-rule)] pt-6">
-            {entries.map((entry) => {
-              const date = formatEntryDate(entryDisplayDate(entry));
-
-              return (
-                <li key={entry.slug}>
-                  <Link
-                    href={`/${collectionParam}/${entry.slug}`}
-                    className="group block text-base text-[var(--foreground)] transition-colors hover:text-[var(--editor-accent)]"
-                  >
-                    <span className="text-sm tabular-nums text-[var(--editor-muted)] group-hover:text-[var(--editor-accent)]">
-                      {date}.
-                    </span>{" "}
-                    <span>{entry.title}</span>
-                  </Link>
-                </li>
-              );
-            })}
+            {entries.map((entry) => (
+              <CollectionEntryRow
+                key={entry.slug}
+                collection={collectionParam}
+                entry={entry}
+                date={formatEntryDate(entryDisplayDate(entry))}
+                isAdmin={admin}
+              />
+            ))}
           </ul>
         )}
       </main>

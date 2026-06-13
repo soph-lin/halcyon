@@ -29,6 +29,7 @@ export type EditorInitialValues = {
 export type WritingEditorProps = {
   initialValues?: EditorInitialValues;
   onSave?: (payload: EditorSavePayload) => void | Promise<void>;
+  onDelete?: () => void;
   placeholder?: string;
 };
 

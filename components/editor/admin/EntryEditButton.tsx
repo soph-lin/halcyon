@@ -18,7 +18,7 @@ export function EntryEditButton(props: EntryEditButtonProps) {
     <button
       type="button"
       onClick={() => openEdit(props)}
-      className="admin-entry-edit-btn"
+      className="admin-entry-action-btn"
       aria-label="Edit entry"
     >
       <Pencil size={18} strokeWidth={1.75} aria-hidden />

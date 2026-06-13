@@ -8,7 +8,10 @@ import {
   getCollectionMeta,
   type CollectionKey,
 } from "@/lib/collections";
-import type { EditorInitialValues, EditorSavePayload } from "@/lib/editor/types";
+import type {
+  EditorInitialValues,
+  EditorSavePayload,
+} from "@/lib/editor/types";
 
 export type EditorModalSavePayload = EditorSavePayload & {
   collection: CollectionKey;
@@ -34,7 +37,8 @@ export function EditorModal({
   onSave,
 }: EditorModalProps) {
   const titleId = useId();
-  const [collection, setCollection] = useState<CollectionKey>(initialCollection);
+  const [collection, setCollection] =
+    useState<CollectionKey>(initialCollection);
 
   useEffect(() => {
     if (!isOpen) {

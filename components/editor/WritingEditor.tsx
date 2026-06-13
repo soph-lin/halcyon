@@ -33,6 +33,7 @@ function onEditorError(error: Error) {
 export function WritingEditor({
   initialValues,
   onSave,
+  onDelete,
   placeholder = "Begin writing…",
 }: WritingEditorProps) {
   const editorRef = useRef<LexicalEditor | null>(null);
@@ -165,14 +166,26 @@ export function WritingEditor({
             <p className="text-sm text-[var(--editor-muted)]">
               {isDirty ? "Unsaved changes" : "All changes saved"}
             </p>
-            <button
-              type="button"
-              onClick={handleSave}
-              disabled={isSaving}
-              className="editor-save-btn"
-            >
-              {isSaving ? "Saving…" : "Save draft"}
-            </button>
+            <div className="flex items-center gap-3">
+              {onDelete && (
+                <button
+                  type="button"
+                  onClick={onDelete}
+                  disabled={isSaving}
+                  className="editor-delete-btn"
+                >
+                  Delete
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleSave}
+                disabled={isSaving}
+                className="editor-save-btn"
+              >
+                {isSaving ? "Saving…" : "Save draft"}
+              </button>
+            </div>
           </footer>
         </div>
       </LexicalComposer>

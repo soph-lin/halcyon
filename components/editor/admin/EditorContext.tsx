@@ -57,7 +57,10 @@ type EditorProviderProps = {
   isAdmin: boolean;
 };
 
-export function EditorProvider({ children, isAdmin: admin }: EditorProviderProps) {
+export function EditorProvider({
+  children,
+  isAdmin: admin,
+}: EditorProviderProps) {
   const router = useRouter();
   const [session, setSession] = useState<EditorSession | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
