@@ -21,8 +21,16 @@ pnpm install
 Config env:
 
 ```bash
+# Database
 DATABASE_URL=<...>
 DIRECT_DATABASE_URL=<...>   # Direct Postgres URL (5432) for db:migrate, only if DATABASE_URL uses a pooler
+
+# Auth
+NEXTAUTH_URL=http://localhost:3000
+AUTH_SECRET=<...>
+GOOGLE_CLIENT_ID=<...>
+GOOGLE_CLIENT_SECRET=<...>
+ADMIN_EMAIL="your-cool-email@example.com"
 ```
 
 Setup database (first time):
