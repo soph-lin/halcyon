@@ -5,6 +5,7 @@ import { EditorDefaults } from "@/components/editor/admin/EditorDefaults";
 import { EntryDeleteButton } from "@/components/editor/admin/EntryDeleteButton";
 import { EntryEditButton } from "@/components/editor/admin/EntryEditButton";
 import { EntryBody } from "@/components/EntryBody";
+import { SeriesNav } from "@/components/SeriesNav";
 import { SiteNav } from "@/components/SiteNav";
 import { getCollectionMeta, isCollectionKey } from "@/lib/collections";
 import {
@@ -12,6 +13,7 @@ import {
   formatEntryDate,
   getPublishedEntry,
 } from "@/lib/entries";
+import { getEntrySeriesNav } from "@/lib/series";
 
 type EntryPageProps = {
   params: Promise<{ collection: string; slug: string }>;
@@ -29,6 +31,8 @@ export default async function EntryPage({ params }: EntryPageProps) {
   if (!entry) {
     notFound();
   }
+
+  const seriesNav = await getEntrySeriesNav(entry.id);
 
   const collection = getCollectionMeta(collectionParam);
   const date = formatEntryDate(entryDisplayDate(entry));
@@ -79,6 +83,8 @@ export default async function EntryPage({ params }: EntryPageProps) {
         <article className="mt-8">
           <EntryBody html={entry.body} />
         </article>
+
+        <SeriesNav items={seriesNav} />
       </main>
     </div>
   );

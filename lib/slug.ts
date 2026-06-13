@@ -35,3 +35,21 @@ export async function uniqueSlugForCollection(
 
   return slug;
 }
+
+export async function uniqueSlugForSeries(title: string): Promise<string> {
+  const base = slugify(title);
+  let slug = base;
+  let suffix = 2;
+
+  while (
+    await prisma.series.findUnique({
+      where: { slug },
+      select: { id: true },
+    })
+  ) {
+    slug = `${base}-${suffix}`;
+    suffix += 1;
+  }
+
+  return slug;
+}

@@ -16,7 +16,7 @@ export type SaveEntryInput = {
 };
 
 export type SaveEntryResult =
-  | { ok: true; collection: CollectionKey; slug: string }
+  | { ok: true; collection: CollectionKey; slug: string; entryId: string }
   | { ok: false; error: string };
 
 export type DeleteEntryResult = { ok: true } | { ok: false; error: string };
@@ -25,6 +25,7 @@ function revalidateEntryPaths(collection: string, slug: string) {
   revalidatePath(`/${collection}`);
   revalidatePath(`/${collection}/${slug}`);
   revalidatePath("/");
+  revalidatePath("/admin/posts");
 }
 
 export async function saveEntry(input: SaveEntryInput): Promise<SaveEntryResult> {
@@ -78,6 +79,7 @@ export async function saveEntry(input: SaveEntryInput): Promise<SaveEntryResult>
         ok: true,
         collection: updated.collection as CollectionKey,
         slug: updated.slug,
+        entryId: updated.id,
       };
     }
 
@@ -100,6 +102,7 @@ export async function saveEntry(input: SaveEntryInput): Promise<SaveEntryResult>
       ok: true,
       collection: created.collection as CollectionKey,
       slug: created.slug,
+      entryId: created.id,
     };
   } catch (error) {
     console.error("saveEntry failed:", error);
@@ -123,6 +126,15 @@ export async function deleteEntry(input: {
   try {
     const existing = await prisma.entry.findUnique({
       where: { id: input.entryId },
+      include: {
+        seriesEntries: {
+          include: {
+            series: {
+              select: { slug: true },
+            },
+          },
+        },
+      },
     });
 
     if (!existing) {
@@ -134,6 +146,12 @@ export async function deleteEntry(input: {
     });
 
     revalidateEntryPaths(existing.collection, existing.slug);
+    revalidatePath("/series");
+
+    for (const membership of existing.seriesEntries) {
+      revalidatePath(`/series/${membership.series.slug}`);
+      revalidatePath(`/admin/posts`);
+    }
 
     return { ok: true };
   } catch (error) {

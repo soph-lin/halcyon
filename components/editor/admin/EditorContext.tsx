@@ -8,14 +8,18 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Pencil } from "lucide-react";
 
 import { saveEntry } from "@/app/actions/entries";
+import {
+  addEntryToSeries,
+  createSeriesAndAddEntry,
+} from "@/app/actions/series";
 import { EditorModal } from "@/components/editor/admin/EditorModal";
 import type { CollectionKey } from "@/lib/collections";
 import type { EditorInitialValues } from "@/lib/editor/types";
+import type { PendingSeriesAssignment } from "@/lib/series-types";
 
 type EditorSession = {
   mode: "create" | "edit";
@@ -35,7 +39,10 @@ export type OpenEditEntryInput = {
 
 type EditorContextValue = {
   isAdmin: boolean;
-  openCreate: () => void;
+  isEditorOpen: boolean;
+  openCreate: (options?: {
+    series?: { seriesId: string; title: string };
+  }) => void;
   openEdit: (entry: OpenEditEntryInput) => void;
   setDefaultCollection: (collection: CollectionKey | null) => void;
 };
@@ -57,6 +64,28 @@ type EditorProviderProps = {
   isAdmin: boolean;
 };
 
+async function applyPendingSeries(
+  entryId: string,
+  pendingSeries: PendingSeriesAssignment[],
+) {
+  for (const item of pendingSeries) {
+    if (item.kind === "existing") {
+      await addEntryToSeries({
+        seriesId: item.seriesId,
+        entryId,
+      });
+      continue;
+    }
+
+    await createSeriesAndAddEntry({
+      title: item.title,
+      description: item.description,
+      customOrder: item.customOrder,
+      entryId,
+    });
+  }
+}
+
 export function EditorProvider({
   children,
   isAdmin: admin,
@@ -64,20 +93,38 @@ export function EditorProvider({
   const router = useRouter();
   const [session, setSession] = useState<EditorSession | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [pendingSeries, setPendingSeries] = useState<PendingSeriesAssignment[]>(
+    [],
+  );
   const [defaultCollection, setDefaultCollection] =
     useState<CollectionKey | null>(null);
 
-  const openCreate = useCallback(() => {
-    setSaveError(null);
-    setSession({
-      mode: "create",
-      collection: defaultCollection ?? "blog",
-      initialValues: { title: "", body: "" },
-    });
-  }, [defaultCollection]);
+  const openCreate = useCallback(
+    (options?: { series?: { seriesId: string; title: string } }) => {
+      setSaveError(null);
+      setPendingSeries(
+        options?.series
+          ? [
+              {
+                kind: "existing",
+                seriesId: options.series.seriesId,
+                title: options.series.title,
+              },
+            ]
+          : [],
+      );
+      setSession({
+        mode: "create",
+        collection: defaultCollection ?? "blog",
+        initialValues: { title: "", body: "" },
+      });
+    },
+    [defaultCollection],
+  );
 
   const openEdit = useCallback((entry: OpenEditEntryInput) => {
     setSaveError(null);
+    setPendingSeries([]);
     setSession({
       mode: "edit",
       collection: entry.collection,
@@ -93,6 +140,7 @@ export function EditorProvider({
   const close = useCallback(() => {
     setSession(null);
     setSaveError(null);
+    setPendingSeries([]);
   }, []);
 
   const handleSave = useCallback(
@@ -120,6 +168,10 @@ export function EditorProvider({
         return;
       }
 
+      if (pendingSeries.length > 0) {
+        await applyPendingSeries(result.entryId, pendingSeries);
+      }
+
       const wasCreate = session.mode === "create";
       close();
       router.refresh();
@@ -128,17 +180,18 @@ export function EditorProvider({
         router.push(`/${result.collection}/${result.slug}`);
       }
     },
-    [close, router, session],
+    [close, pendingSeries, router, session],
   );
 
   const value = useMemo(
     () => ({
       isAdmin: admin,
+      isEditorOpen: session !== null,
       openCreate,
       openEdit,
       setDefaultCollection,
     }),
-    [admin, openCreate, openEdit],
+    [admin, openCreate, openEdit, session],
   );
 
   return (
@@ -147,13 +200,9 @@ export function EditorProvider({
 
       {admin && (
         <>
-          <Link href="/admin/sign-out" className="admin-sign-out">
-            Sign out
-          </Link>
-
           <button
             type="button"
-            onClick={openCreate}
+            onClick={() => openCreate()}
             className="admin-editor-fab"
             aria-label="New entry"
           >
@@ -166,8 +215,12 @@ export function EditorProvider({
               isOpen
               mode={session.mode}
               collection={session.collection}
+              entryId={session.entryId}
               initialValues={session.initialValues}
               saveError={saveError}
+              pendingSeries={pendingSeries}
+              onPendingSeriesChange={setPendingSeries}
+              onSeriesMembershipChange={() => router.refresh()}
               onClose={close}
               onSave={handleSave}
             />

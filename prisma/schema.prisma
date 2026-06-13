@@ -8,18 +8,44 @@ datasource db {
 }
 
 model Entry {
-  id          String    @id @default(cuid())
-  slug        String
-  title       String
-  body        String    @default("")
-  collection  String    @default("blog")
-  status      String    @default("draft")
-  publishedAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id            String        @id @default(cuid())
+  slug          String
+  title         String
+  body          String        @default("")
+  collection    String        @default("blog")
+  status        String        @default("draft")
+  publishedAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  seriesEntries SeriesEntry[]
 
   @@unique([collection, slug])
   @@index([collection, status, publishedAt])
+}
+
+model Series {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  description String        @default("")
+  customOrder Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  entries     SeriesEntry[]
+}
+
+model SeriesEntry {
+  id       String @id @default(cuid())
+  seriesId String
+  entryId  String
+  position Int?
+
+  series Series @relation(fields: [seriesId], references: [id], onDelete: Cascade)
+  entry  Entry  @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  @@unique([seriesId, entryId])
+  @@unique([seriesId, position])
+  @@index([entryId])
 }
 
 model SiteSettings {

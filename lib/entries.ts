@@ -1,12 +1,16 @@
 import type { Entry } from "@/lib/generated/prisma/client";
 
 import type { CollectionKey } from "@/lib/collections";
+import {
+  type AdminEntryListItem,
+  type PublishedEntryListItem,
+  entryDisplayDate,
+  formatEntryDate,
+} from "@/lib/entry-utils";
 import { prisma } from "@/lib/prisma";
 
-export type PublishedEntryListItem = Pick<
-  Entry,
-  "id" | "slug" | "title" | "publishedAt" | "createdAt"
->;
+export type { AdminEntryListItem, PublishedEntryListItem };
+export { entryDisplayDate, formatEntryDate };
 
 export async function listPublishedEntries(
   collection: CollectionKey,
@@ -27,6 +31,22 @@ export async function listPublishedEntries(
   });
 
   return entries;
+}
+
+export async function listAllEntriesForAdmin(): Promise<AdminEntryListItem[]> {
+  return prisma.entry.findMany({
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      body: true,
+      collection: true,
+      status: true,
+      publishedAt: true,
+      createdAt: true,
+    },
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+  });
 }
 
 export async function getPublishedEntry(
@@ -51,19 +71,4 @@ export async function getPublishedEntry(
       createdAt: true,
     },
   });
-}
-
-export function entryDisplayDate(entry: {
-  publishedAt: Date | null;
-  createdAt: Date;
-}): Date {
-  return entry.publishedAt ?? entry.createdAt;
-}
-
-export function formatEntryDate(date: Date): string {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(date);
 }

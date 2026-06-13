@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { SignOutActions } from "@/components/admin/SignOutActions";
+import { SignOutActions } from "@/components/auth/SignOutActions";
 import { SiteNav } from "@/components/SiteNav";
 import { isAdmin } from "@/lib/admin";
 

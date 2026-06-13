@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
 
-import { GoogleSignInButton } from "@/components/admin/GoogleSignInButton";
+import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 import { SiteNav } from "@/components/SiteNav";
 import { isAdmin } from "@/lib/admin";
 
 export default async function AdminLoginPage() {
   if (await isAdmin()) {
-    redirect("/");
+    redirect("/admin/posts");
   }
 
   return (
