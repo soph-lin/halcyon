@@ -1,16 +1,16 @@
 import Link from "next/link";
-import { Sun } from "lucide-react";
 
-import { isAdmin } from "@/lib/admin";
+import {
+  SiteNavDashboardLink,
+  SiteNavSignOutLink,
+} from "@/components/SiteNavAdminChrome";
 import { COLLECTIONS } from "@/lib/data/collections";
 
 type SiteNavProps = {
   active?: "home" | "blog" | "leaves";
 };
 
-export async function SiteNav({ active }: SiteNavProps) {
-  const admin = await isAdmin();
-
+export function SiteNav({ active }: SiteNavProps) {
   return (
     <header className="site-nav border-b border-[var(--editor-rule)]">
       <div className="mx-auto flex max-w-[42rem] items-center justify-between gap-6 px-6 py-5">
@@ -21,15 +21,7 @@ export async function SiteNav({ active }: SiteNavProps) {
           >
             Halcyon
           </Link>
-          {admin ? (
-            <Link
-              href="/admin/posts"
-              className="site-nav-dashboard-link"
-              aria-label="Dashboard"
-            >
-              <Sun size={17} strokeWidth={1.75} aria-hidden />
-            </Link>
-          ) : null}
+          <SiteNavDashboardLink />
         </div>
 
         <nav className="flex items-center gap-5" aria-label="Site">
@@ -50,11 +42,7 @@ export async function SiteNav({ active }: SiteNavProps) {
         </nav>
       </div>
 
-      {admin ? (
-        <Link href="/admin/sign-out" className="site-nav-sign-out">
-          Sign out
-        </Link>
-      ) : null}
+      <SiteNavSignOutLink />
     </header>
   );
 }

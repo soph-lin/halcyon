@@ -2,12 +2,11 @@ import Link from "next/link";
 
 import { ProfileAvatar } from "@/components/ProfileAvatar";
 import { SiteNav } from "@/components/SiteNav";
-import { isAdmin } from "@/lib/admin";
 import { COLLECTION_KEYS, getCollectionMeta } from "@/lib/data/collections";
 import { getSiteSettings } from "@/lib/db/site-settings";
 
 export default async function Home() {
-  const [settings, admin] = await Promise.all([getSiteSettings(), isAdmin()]);
+  const settings = await getSiteSettings();
 
   return (
     <div className="min-h-full">
@@ -25,7 +24,7 @@ export default async function Home() {
             </div>
           </div>
 
-          <ProfileAvatar imageUrl={settings.profileImageUrl} isAdmin={admin} />
+          <ProfileAvatar imageUrl={settings.profileImageUrl} />
         </div>
 
         <ul className="mt-10 space-y-3 border-t border-[var(--editor-rule)] pt-6">

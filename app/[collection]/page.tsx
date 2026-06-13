@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { EditorDefaults } from "@/components/editor/admin/EditorDefaults";
 import { CollectionEntryRow } from "@/components/editor/admin/CollectionEntryRow";
 import { SiteNav } from "@/components/SiteNav";
-import { isAdmin } from "@/lib/admin";
 import { getCollectionMeta, isCollectionKey } from "@/lib/data/collections";
 import {
   entryDisplayDate,
@@ -27,10 +26,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
   }
 
   const collection = getCollectionMeta(collectionParam);
-  const [entries, admin] = await Promise.all([
-    listPublishedEntries(collectionParam),
-    isAdmin(),
-  ]);
+  const entries = await listPublishedEntries(collectionParam);
 
   return (
     <div className="min-h-full">
@@ -52,7 +48,6 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                 collection={collectionParam}
                 entry={entry}
                 date={formatEntryDate(entryDisplayDate(entry))}
-                isAdmin={admin}
               />
             ))}
           </ul>

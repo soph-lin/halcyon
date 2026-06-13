@@ -7,6 +7,7 @@ import { Trash2 } from "lucide-react";
 
 import { deleteEntry } from "@/app/actions/entries";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { useEditor } from "@/components/editor/admin/EditorContext";
 import type { CollectionKey } from "@/lib/data/collections";
 import type { PublishedEntryListItem } from "@/lib/editor/types/entry";
 
@@ -14,16 +15,15 @@ type CollectionEntryRowProps = {
   collection: CollectionKey;
   entry: PublishedEntryListItem;
   date: string;
-  isAdmin: boolean;
 };
 
 export function CollectionEntryRow({
   collection,
   entry,
   date,
-  isAdmin,
 }: CollectionEntryRowProps) {
   const router = useRouter();
+  const { isAdmin, showAdminUi } = useEditor();
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -62,7 +62,7 @@ export function CollectionEntryRow({
           <span>{entry.title}</span>
         </Link>
 
-        {isAdmin && (
+        {isAdmin && showAdminUi && (
           <button
             type="button"
             className="entry-list-delete"

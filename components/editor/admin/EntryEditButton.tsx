@@ -8,9 +8,9 @@ import type { OpenEditEntryInput } from "@/components/editor/admin/EditorContext
 type EntryEditButtonProps = OpenEditEntryInput;
 
 export function EntryEditButton(props: EntryEditButtonProps) {
-  const { isAdmin, openEdit } = useEditor();
+  const { isAdmin, showAdminUi, openEdit } = useEditor();
 
-  if (!isAdmin) {
+  if (!isAdmin || !showAdminUi) {
     return null;
   }
 

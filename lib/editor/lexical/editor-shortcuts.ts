@@ -30,6 +30,23 @@ export function isEditingToolbarFontSize(target: EventTarget | null): boolean {
   return target.closest(".editor-toolbar-size.is-editing") !== null;
 }
 
+/** V toggles admin chrome — ignore in editor body, title, and form fields. */
+export function shouldIgnoreViewToggle(target: EventTarget | null): boolean {
+  if (
+    isTypingInTitle(target) ||
+    isTypingInTitle(document.activeElement) ||
+    isTypingInFormField(target) ||
+    isTypingInFormField(document.activeElement)
+  ) {
+    return true;
+  }
+
+  return (
+    isTypingInEditorBody(target) ||
+    isTypingInEditorBody(document.activeElement)
+  );
+}
+
 /** T toggles toolbar — ignore in editor body, title, fields, and the toolbar itself. */
 export function shouldIgnoreToolbarToggle(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) {

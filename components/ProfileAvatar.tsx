@@ -5,20 +5,22 @@ import { useRouter } from "next/navigation";
 import { CircleUser } from "lucide-react";
 
 import { uploadProfileImage } from "@/app/actions/profile";
+import { useEditor } from "@/components/editor/admin/EditorContext";
 
 type ProfileAvatarProps = {
   imageUrl: string | null;
-  isAdmin: boolean;
 };
 
-export function ProfileAvatar({ imageUrl, isAdmin }: ProfileAvatarProps) {
+export function ProfileAvatar({ imageUrl }: ProfileAvatarProps) {
   const router = useRouter();
+  const { isAdmin, showAdminUi } = useEditor();
+  const canEditProfile = isAdmin && showAdminUi;
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
   const openFilePicker = () => {
-    if (!isAdmin || isUploading) {
+    if (!canEditProfile || isUploading) {
       return;
     }
 
@@ -57,14 +59,14 @@ export function ProfileAvatar({ imageUrl, isAdmin }: ProfileAvatarProps) {
       <button
         type="button"
         onClick={openFilePicker}
-        disabled={!isAdmin || isUploading}
+        disabled={!canEditProfile || isUploading}
         className="profile-avatar-button"
         aria-label={
           imageUrl
-            ? isAdmin
+            ? canEditProfile
               ? "Change profile photo"
               : "Profile photo"
-            : isAdmin
+            : canEditProfile
               ? "Upload profile photo"
               : "Guest profile"
         }
@@ -82,7 +84,7 @@ export function ProfileAvatar({ imageUrl, isAdmin }: ProfileAvatarProps) {
         )}
       </button>
 
-      {isAdmin && (
+      {canEditProfile && (
         <input
           ref={inputRef}
           type="file"

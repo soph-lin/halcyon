@@ -25,12 +25,12 @@ export function EntryDeleteButton({
   redirectTo,
 }: EntryDeleteButtonProps) {
   const router = useRouter();
-  const { isAdmin } = useEditor();
+  const { isAdmin, showAdminUi } = useEditor();
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  if (!isAdmin) {
+  if (!isAdmin || !showAdminUi) {
     return null;
   }
 

@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -20,6 +21,7 @@ import { EditorModal } from "@/components/editor/admin/EditorModal";
 import type { CollectionKey } from "@/lib/data/collections";
 import type { EditorInitialValues } from "@/lib/editor/types";
 import type { PendingSeriesAssignment } from "@/lib/editor/types/series";
+import { shouldIgnoreViewToggle } from "@/lib/editor/lexical/editor-shortcuts";
 
 type EditorSession = {
   mode: "create" | "edit";
@@ -39,12 +41,14 @@ export type OpenEditEntryInput = {
 
 type EditorContextValue = {
   isAdmin: boolean;
+  showAdminUi: boolean;
   isEditorOpen: boolean;
   openCreate: (options?: {
     series?: { seriesId: string; title: string };
   }) => void;
   openEdit: (entry: OpenEditEntryInput) => void;
   setDefaultCollection: (collection: CollectionKey | null) => void;
+  toggleAdminUi: () => void;
 };
 
 const EditorContext = createContext<EditorContextValue | null>(null);
@@ -98,6 +102,37 @@ export function EditorProvider({
   );
   const [defaultCollection, setDefaultCollection] =
     useState<CollectionKey | null>(null);
+  const [showAdminUi, setShowAdminUi] = useState(true);
+
+  const toggleAdminUi = useCallback(() => {
+    setShowAdminUi((visible) => !visible);
+  }, []);
+
+  useEffect(() => {
+    if (!admin) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "v" && event.key !== "V") {
+        return;
+      }
+
+      if (event.metaKey || event.ctrlKey || event.altKey) {
+        return;
+      }
+
+      if (shouldIgnoreViewToggle(event.target)) {
+        return;
+      }
+
+      event.preventDefault();
+      toggleAdminUi();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [admin, toggleAdminUi]);
 
   const openCreate = useCallback(
     (options?: { series?: { seriesId: string; title: string } }) => {
@@ -143,6 +178,12 @@ export function EditorProvider({
     setPendingSeries([]);
   }, []);
 
+  useEffect(() => {
+    if (!showAdminUi && session !== null) {
+      close();
+    }
+  }, [close, session, showAdminUi]);
+
   const handleSave = useCallback(
     async (payload: {
       title: string;
@@ -186,19 +227,21 @@ export function EditorProvider({
   const value = useMemo(
     () => ({
       isAdmin: admin,
+      showAdminUi,
       isEditorOpen: session !== null,
       openCreate,
       openEdit,
       setDefaultCollection,
+      toggleAdminUi,
     }),
-    [admin, openCreate, openEdit, session],
+    [admin, openCreate, openEdit, session, showAdminUi, toggleAdminUi],
   );
 
   return (
     <EditorContext.Provider value={value}>
       {children}
 
-      {admin && (
+      {admin && showAdminUi && (
         <>
           <button
             type="button"
