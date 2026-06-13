@@ -15,10 +15,10 @@ export default async function AdminLoginPage() {
 
       <main className="mx-auto max-w-[42rem] px-6 py-10 sm:py-14">
         <h1 className="font-heading text-3xl tracking-tight text-[var(--foreground)]">
-          Admin sign in
+          Come in
         </h1>
         <p className="mt-3 text-[var(--editor-muted)]">
-          Sign in with Google to edit entries.
+          If you are the chosen one.
         </p>
 
         <div className="mt-8">
