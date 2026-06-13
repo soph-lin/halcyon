@@ -18,6 +18,21 @@ Install packages:
 pnpm install
 ```
 
+Config env:
+
+```bash
+DATABASE_URL=<...>
+DIRECT_DATABASE_URL=<...>   # Direct Postgres URL (5432) for db:migrate, only if DATABASE_URL uses a pooler
+```
+
+Setup database (first time):
+
+```bash
+pnpm db:generate    # Generate db
+pnpm db:migrate     # Make db match prisma
+pnpm db:seed        # (Optional) Seed db with sample posts
+```
+
 Run server:
 
 ```bash
