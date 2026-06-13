@@ -29,6 +29,7 @@ Config env:
 
 ```bash
 # Database
+# For Supabase, DATABASE_URL is session pooler connection, DIRECT_DATABASE_URL is direct connection
 DATABASE_URL=<...>
 DIRECT_DATABASE_URL=<...>   # Direct Postgres URL (5432) for db:migrate, only if DATABASE_URL uses a pooler
 
