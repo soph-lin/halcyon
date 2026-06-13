@@ -2,7 +2,7 @@
 
 ## About
 
-A personal website for writing.
+A lovely writing engine
 
 ## Architecture
 
@@ -14,8 +14,6 @@ The usual bread-and-butter for web apps:
 - Google OAuth
 
 The rich text editor uses [Lexical](https://lexical.dev) framework, developed by Meta.
-
-Posts are uploaded to configured database, so their fate is in your hands.
 
 ## Local Deployment
 
