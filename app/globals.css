@@ -504,6 +504,58 @@ body {
   color: var(--editor-muted);
 }
 
+.profile-avatar-root {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.375rem;
+}
+
+.profile-avatar-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 7rem;
+  height: 7rem;
+  overflow: hidden;
+  border: 1px solid var(--editor-rule);
+  border-radius: 9999px;
+  background: var(--background);
+  color: var(--editor-muted);
+  transition:
+    border-color 150ms ease,
+    color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.profile-avatar-button:not(:disabled):hover {
+  border-color: rgba(139, 105, 20, 0.35);
+  color: var(--editor-accent);
+  background: color-mix(in srgb, var(--background) 82%, var(--editor-accent));
+  transform: translateY(-1px);
+}
+
+.profile-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-avatar-icon {
+  flex-shrink: 0;
+}
+
+.profile-avatar-error {
+  max-width: 8.75rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-align: right;
+  color: #7a2e1a;
+}
+
 .admin-editor-fab {
   position: fixed;
   right: 1.5rem;

@@ -21,3 +21,9 @@ model Entry {
   @@unique([collection, slug])
   @@index([collection, status, publishedAt])
 }
+
+model SiteSettings {
+  id              String   @id
+  profileImageUrl String?
+  updatedAt       DateTime @updatedAt
+}
