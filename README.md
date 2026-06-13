@@ -51,5 +51,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Credits
 
-Favicon used
-<a target="_blank" href="https://icons8.com/icon/wvpF6rQ8lYbV/botanical">Botanical</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+Favicon: [Botanical](https://icons8.com/icon/wvpF6rQ8lYbV/botanical) icon by [https://icons8.com](Icons8)
