@@ -23,6 +23,21 @@
   --font-body: var(--font-garamond), "EB Garamond", Garamond, "Times New Roman", serif;
 }
 
+html {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
