@@ -6,6 +6,13 @@ A personal website for writing.
 
 ## Architecture
 
+The usual bread-and-butter for web apps:
+
+- Next.js framework
+- Supabase + Prisma ORM
+- Vercel hosting
+- Google OAuth
+
 The rich text editor uses [Lexical](https://lexical.dev) framework, developed by Meta.
 
 Posts are uploaded to configured database, so their fate is in your hands.
