@@ -26,7 +26,7 @@ function revalidateEntryPaths(collection: string, slug: string) {
 }
 
 export async function saveEntry(input: SaveEntryInput): Promise<SaveEntryResult> {
-  if (!isAdmin()) {
+  if (!(await isAdmin())) {
     return { ok: false, error: "Unauthorized" };
   }
 

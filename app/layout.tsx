@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Playfair_Display } from "next/font/google";
 
-import { AdminEditorProvider } from "@/components/admin/AdminEditorContext";
+import { EditorProvider } from "@/components/editor/admin/EditorContext";
+import { isAdmin } from "@/lib/admin";
 
 import "./globals.css";
 
@@ -22,18 +23,20 @@ export const metadata: Metadata = {
   description: "Personal writing site",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const admin = await isAdmin();
+
   return (
     <html
       lang="en"
       className={`${playfair.variable} ${garamond.variable} h-full antialiased`}
     >
       <body className="min-h-full font-body">
-        <AdminEditorProvider>{children}</AdminEditorProvider>
+        <EditorProvider isAdmin={admin}>{children}</EditorProvider>
       </body>
     </html>
   );

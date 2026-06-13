@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { sanitizeBodyHtml } from "@/lib/sanitize";
 
 type EntryBodyProps = {
@@ -7,7 +9,11 @@ type EntryBodyProps = {
 };
 
 export function EntryBody({ html }: EntryBodyProps) {
-  const safeHtml = sanitizeBodyHtml(html);
+  const [safeHtml, setSafeHtml] = useState("");
+
+  useEffect(() => {
+    setSafeHtml(sanitizeBodyHtml(html));
+  }, [html]);
 
   if (!safeHtml) {
     return null;

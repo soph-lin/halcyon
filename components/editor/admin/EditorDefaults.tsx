@@ -2,16 +2,16 @@
 
 import { useEffect } from "react";
 
-import { useAdminEditor } from "@/components/admin/AdminEditorContext";
+import { useEditor } from "@/components/editor/admin/EditorContext";
 import type { CollectionKey } from "@/lib/collections";
 
-type AdminEditorDefaultsProps = {
+type EditorDefaultsProps = {
   collection?: CollectionKey;
 };
 
 /** Sets the default collection for the floating new-entry button on this page. */
-export function AdminEditorDefaults({ collection }: AdminEditorDefaultsProps) {
-  const { setDefaultCollection } = useAdminEditor();
+export function EditorDefaults({ collection }: EditorDefaultsProps) {
+  const { setDefaultCollection } = useEditor();
 
   useEffect(() => {
     setDefaultCollection(collection ?? null);

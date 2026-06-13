@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { AdminEditorDefaults } from "@/components/admin/AdminEditorDefaults";
-import { EntryEditButton } from "@/components/admin/EntryEditButton";
+import { EditorDefaults } from "@/components/editor/admin/EditorDefaults";
+import { EntryEditButton } from "@/components/editor/admin/EntryEditButton";
 import { EntryBody } from "@/components/EntryBody";
 import { SiteNav } from "@/components/SiteNav";
 import { getCollectionMeta, isCollectionKey } from "@/lib/collections";
@@ -34,7 +34,7 @@ export default async function EntryPage({ params }: EntryPageProps) {
 
   return (
     <div className="min-h-full">
-      <AdminEditorDefaults collection={collectionParam} />
+      <EditorDefaults collection={collectionParam} />
       <SiteNav active={collectionParam} />
 
       <main className="mx-auto max-w-[42rem] px-6 py-10 sm:py-14">

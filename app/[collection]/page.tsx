@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { AdminEditorDefaults } from "@/components/admin/AdminEditorDefaults";
+import { EditorDefaults } from "@/components/editor/admin/EditorDefaults";
 import { SiteNav } from "@/components/SiteNav";
 import { getCollectionMeta, isCollectionKey } from "@/lib/collections";
 import {
@@ -30,7 +30,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
 
   return (
     <div className="min-h-full">
-      <AdminEditorDefaults collection={collectionParam} />
+      <EditorDefaults collection={collectionParam} />
       <SiteNav active={collectionParam} />
 
       <main className="mx-auto max-w-[42rem] px-6 py-10 sm:py-14">

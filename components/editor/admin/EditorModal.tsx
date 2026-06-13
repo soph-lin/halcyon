@@ -1,8 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useId, useState } from "react";
-
-import { CloseIcon } from "@/components/admin/icons";
+import { X } from "lucide-react";
 import { WritingEditor } from "@/components/editor/WritingEditor";
 import {
   COLLECTION_KEYS,
@@ -129,7 +128,7 @@ export function EditorModal({
             className="admin-editor-modal-close"
             aria-label="Close"
           >
-            <CloseIcon />
+            <X size={20} strokeWidth={1.75} aria-hidden />
           </button>
         </header>
 

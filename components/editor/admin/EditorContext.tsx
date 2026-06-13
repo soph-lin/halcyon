@@ -8,12 +8,12 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Pencil } from "lucide-react";
 
 import { saveEntry } from "@/app/actions/entries";
-import { EditorModal } from "@/components/admin/EditorModal";
-import { isAdmin } from "@/lib/admin";
+import { EditorModal } from "@/components/editor/admin/EditorModal";
 import type { CollectionKey } from "@/lib/collections";
 import type { EditorInitialValues } from "@/lib/editor/types";
 
@@ -33,28 +33,32 @@ export type OpenEditEntryInput = {
   body: string;
 };
 
-type AdminEditorContextValue = {
+type EditorContextValue = {
   isAdmin: boolean;
   openCreate: () => void;
   openEdit: (entry: OpenEditEntryInput) => void;
   setDefaultCollection: (collection: CollectionKey | null) => void;
 };
 
-const AdminEditorContext = createContext<AdminEditorContextValue | null>(null);
+const EditorContext = createContext<EditorContextValue | null>(null);
 
-export function useAdminEditor(): AdminEditorContextValue {
-  const context = useContext(AdminEditorContext);
+export function useEditor(): EditorContextValue {
+  const context = useContext(EditorContext);
 
   if (!context) {
-    throw new Error("useAdminEditor must be used within AdminEditorProvider");
+    throw new Error("useEditor must be used within EditorProvider");
   }
 
   return context;
 }
 
-export function AdminEditorProvider({ children }: { children: ReactNode }) {
+type EditorProviderProps = {
+  children: ReactNode;
+  isAdmin: boolean;
+};
+
+export function EditorProvider({ children, isAdmin: admin }: EditorProviderProps) {
   const router = useRouter();
-  const admin = isAdmin();
   const [session, setSession] = useState<EditorSession | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [defaultCollection, setDefaultCollection] =
@@ -135,11 +139,15 @@ export function AdminEditorProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <AdminEditorContext.Provider value={value}>
+    <EditorContext.Provider value={value}>
       {children}
 
       {admin && (
         <>
+          <Link href="/admin/sign-out" className="admin-sign-out">
+            Sign out
+          </Link>
+
           <button
             type="button"
             onClick={openCreate}
@@ -163,6 +171,6 @@ export function AdminEditorProvider({ children }: { children: ReactNode }) {
           )}
         </>
       )}
-    </AdminEditorContext.Provider>
+    </EditorContext.Provider>
   );
 }

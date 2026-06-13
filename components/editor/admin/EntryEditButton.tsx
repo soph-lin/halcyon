@@ -1,13 +1,14 @@
 "use client";
 
-import { useAdminEditor } from "@/components/admin/AdminEditorContext";
-import type { OpenEditEntryInput } from "@/components/admin/AdminEditorContext";
-import { PencilIcon } from "@/components/admin/icons";
+import { Pencil } from "lucide-react";
+
+import { useEditor } from "@/components/editor/admin/EditorContext";
+import type { OpenEditEntryInput } from "@/components/editor/admin/EditorContext";
 
 type EntryEditButtonProps = OpenEditEntryInput;
 
 export function EntryEditButton(props: EntryEditButtonProps) {
-  const { isAdmin, openEdit } = useAdminEditor();
+  const { isAdmin, openEdit } = useEditor();
 
   if (!isAdmin) {
     return null;
@@ -20,7 +21,7 @@ export function EntryEditButton(props: EntryEditButtonProps) {
       className="admin-entry-edit-btn"
       aria-label="Edit entry"
     >
-      <PencilIcon />
+      <Pencil size={18} strokeWidth={1.75} aria-hidden />
     </button>
   );
 }
