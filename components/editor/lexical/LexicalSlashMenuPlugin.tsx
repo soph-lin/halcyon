@@ -25,7 +25,7 @@ import {
 import {
   $applyBlockType,
   $clearTypographyInAffectedBlocks,
-} from "@/lib/editor/block-typography";
+} from "@/lib/editor/block/block-typography";
 import { useCallback, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 

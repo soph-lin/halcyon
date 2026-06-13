@@ -10,7 +10,7 @@ import {
 } from "@lexical/markdown";
 import { $getSelection, $isRangeSelection, type ElementNode, type LexicalNode } from "lexical";
 
-import { $clearTypographyInAffectedBlocks } from "@/lib/editor/block-typography";
+import { $clearTypographyInAffectedBlocks } from "@/lib/editor/block/block-typography";
 
 function withInlineTypographyReset(
   transformer: ElementTransformer,

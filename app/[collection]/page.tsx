@@ -4,7 +4,7 @@ import { EditorDefaults } from "@/components/editor/admin/EditorDefaults";
 import { CollectionEntryRow } from "@/components/editor/admin/CollectionEntryRow";
 import { SiteNav } from "@/components/SiteNav";
 import { isAdmin } from "@/lib/admin";
-import { getCollectionMeta, isCollectionKey } from "@/lib/collections";
+import { getCollectionMeta, isCollectionKey } from "@/lib/data/collections";
 import {
   entryDisplayDate,
   formatEntryDate,

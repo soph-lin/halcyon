@@ -15,7 +15,7 @@ import type {
   EditorSeriesMembership,
   PendingSeriesAssignment,
   SeriesOption,
-} from "@/lib/series-types";
+} from "@/lib/editor/types/series";
 
 const NEW_SERIES_VALUE = "__new__";
 

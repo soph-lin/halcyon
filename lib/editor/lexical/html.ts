@@ -1,7 +1,7 @@
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { $getRoot, type LexicalEditor } from "lexical";
 
-import { sanitizeBodyHtml } from "@/lib/sanitize";
+import { sanitizeBodyHtml } from "@/lib/editor/format/sanitize";
 
 export function getEditorHtml(editor: LexicalEditor): string {
   let html = "";

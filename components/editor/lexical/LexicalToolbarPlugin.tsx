@@ -21,7 +21,7 @@ import {
   getActiveTextFormats,
   getSelectionFontSize,
   type TextFormat,
-} from "@/lib/editor/typography";
+} from "@/lib/editor/lexical/typography";
 
 type LexicalToolbarPluginProps = {
   onDirty: () => void;

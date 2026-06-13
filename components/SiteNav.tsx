@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Sun } from "lucide-react";
 
 import { isAdmin } from "@/lib/admin";
-import { COLLECTIONS } from "@/lib/collections";
+import { COLLECTIONS } from "@/lib/data/collections";
 
 type SiteNavProps = {
   active?: "home" | "blog" | "leaves";

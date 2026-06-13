@@ -13,12 +13,12 @@ import {
   COLLECTION_KEYS,
   getCollectionMeta,
   type CollectionKey,
-} from "@/lib/collections";
+} from "@/lib/data/collections";
 import type {
   EditorInitialValues,
   EditorSavePayload,
 } from "@/lib/editor/types";
-import type { PendingSeriesAssignment } from "@/lib/series-types";
+import type { PendingSeriesAssignment } from "@/lib/editor/types/series";
 import { ModalPortal } from "@/components/ui/ModalPortal";
 import { useBodyScrollLock } from "@/components/ui/useBodyScrollLock";
 
@@ -109,76 +109,76 @@ export function EditorModal({
   return (
     <ModalPortal>
       <div className="admin-editor-modal-root" role="presentation">
-      <button
-        type="button"
-        className="admin-editor-modal-backdrop"
-        aria-label="Close editor"
-        onClick={onClose}
-      />
+        <button
+          type="button"
+          className="admin-editor-modal-backdrop"
+          aria-label="Close editor"
+          onClick={onClose}
+        />
 
-      <div
-        className="admin-editor-modal-panel"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-      >
-        <header className="admin-editor-modal-header">
-          <div>
-            <h2
-              id={titleId}
-              className="font-heading text-lg tracking-tight text-[var(--foreground)]"
-            >
-              {mode === "create" ? "new entry" : "edit entry"}
-            </h2>
-            <div className="admin-editor-meta">
-              <div className="admin-editor-meta-row">
-                <label className="admin-editor-meta-field">
-                  <span>collection</span>
-                  <select
-                    value={collection}
-                    onChange={(event) =>
-                      setCollection(event.target.value as CollectionKey)
-                    }
-                    className="admin-editor-collection-select"
-                  >
-                    {COLLECTION_KEYS.map((key) => (
-                      <option key={key} value={key}>
-                        {getCollectionMeta(key).title}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <EditorSeriesSelect picker={seriesPicker} />
+        <div
+          className="admin-editor-modal-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={titleId}
+        >
+          <header className="admin-editor-modal-header">
+            <div>
+              <h2
+                id={titleId}
+                className="font-heading text-lg tracking-tight text-[var(--foreground)]"
+              >
+                {mode === "create" ? "new entry" : "edit entry"}
+              </h2>
+              <div className="admin-editor-meta">
+                <div className="admin-editor-meta-row">
+                  <label className="admin-editor-meta-field">
+                    <span>collection</span>
+                    <select
+                      value={collection}
+                      onChange={(event) =>
+                        setCollection(event.target.value as CollectionKey)
+                      }
+                      className="admin-editor-collection-select"
+                    >
+                      {COLLECTION_KEYS.map((key) => (
+                        <option key={key} value={key}>
+                          {getCollectionMeta(key).title}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <EditorSeriesSelect picker={seriesPicker} />
+                </div>
+                <EditorSeriesExtras picker={seriesPicker} />
+                <EditorSeriesModals picker={seriesPicker} />
               </div>
-              <EditorSeriesExtras picker={seriesPicker} />
-              <EditorSeriesModals picker={seriesPicker} />
             </div>
+
+            <button
+              type="button"
+              onClick={onClose}
+              className="admin-editor-modal-close"
+              aria-label="Close"
+            >
+              <X size={20} strokeWidth={1.75} aria-hidden />
+            </button>
+          </header>
+
+          <div className="admin-editor-modal-body">
+            {saveError && (
+              <p className="admin-editor-save-error" role="alert">
+                {saveError}
+              </p>
+            )}
+            <WritingEditor
+              key={editorKey}
+              initialValues={initialValues}
+              placeholder="Start writing…"
+              onSave={handleSave}
+            />
           </div>
-
-          <button
-            type="button"
-            onClick={onClose}
-            className="admin-editor-modal-close"
-            aria-label="Close"
-          >
-            <X size={20} strokeWidth={1.75} aria-hidden />
-          </button>
-        </header>
-
-        <div className="admin-editor-modal-body">
-          {saveError && (
-            <p className="admin-editor-save-error" role="alert">
-              {saveError}
-            </p>
-          )}
-          <WritingEditor
-            key={editorKey}
-            initialValues={initialValues}
-            placeholder="Start writing…"
-            onSave={handleSave}
-          />
         </div>
-      </div>
       </div>
     </ModalPortal>
   );

@@ -14,8 +14,8 @@ import {
   getFontSizeShortcutDelta,
   isTypingInEditorBody,
   shouldHandleFontSizeShortcut,
-} from "@/lib/editor/editor-shortcuts";
-import { $stepLineBlockFontSize } from "@/lib/editor/typography";
+} from "@/lib/editor/lexical/editor-shortcuts";
+import { $stepLineBlockFontSize } from "@/lib/editor/lexical/typography";
 
 type LexicalFontSizeShortcutPluginProps = {
   onDirty: () => void;

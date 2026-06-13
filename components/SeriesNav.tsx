@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { EntrySeriesNavItem } from "@/lib/series-types";
+import type { EntrySeriesNavItem } from "@/lib/editor/types/series";
 
 type SeriesNavProps = {
   items: EntrySeriesNavItem[];

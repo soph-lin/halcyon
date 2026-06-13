@@ -19,11 +19,11 @@ import { LexicalFontSizeShortcutPlugin } from "@/components/editor/lexical/Lexic
 import { LexicalInitialHtmlPlugin } from "@/components/editor/lexical/LexicalInitialHtmlPlugin";
 import { LexicalPastePlugin } from "@/components/editor/lexical/LexicalPastePlugin";
 import { LexicalSlashMenuPlugin } from "@/components/editor/lexical/LexicalSlashMenuPlugin";
-import { getEditorHtml } from "@/lib/editor/lexical-html";
-import { writingMarkdownTransformers } from "@/lib/editor/markdown-transformers";
-import { editorNodes } from "@/lib/editor/lexical-nodes";
-import { shouldIgnoreToolbarToggle } from "@/lib/editor/editor-shortcuts";
-import { lexicalTheme } from "@/lib/editor/lexical-theme";
+import { getEditorHtml } from "@/lib/editor/lexical/html";
+import { writingMarkdownTransformers } from "@/lib/editor/lexical/markdown-transformers";
+import { editorNodes } from "@/lib/editor/lexical/nodes";
+import { shouldIgnoreToolbarToggle } from "@/lib/editor/lexical/editor-shortcuts";
+import { lexicalTheme } from "@/lib/editor/lexical/theme";
 import type { EditorSavePayload, WritingEditorProps } from "@/lib/editor/types";
 
 function onEditorError(error: Error) {

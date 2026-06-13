@@ -3,7 +3,7 @@
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useEffect, useRef } from "react";
 
-import { setEditorHtml } from "@/lib/editor/lexical-html";
+import { setEditorHtml } from "@/lib/editor/lexical/html";
 
 type LexicalInitialHtmlPluginProps = {
   html: string;

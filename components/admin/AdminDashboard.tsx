@@ -5,16 +5,16 @@ import { useMemo, useState } from "react";
 
 import { AdminEntryRow } from "@/components/admin/AdminEntryRow";
 import { AdminSeriesSection } from "@/components/admin/AdminSeriesSection";
-import type { CollectionMeta } from "@/lib/collections";
+import type { CollectionMeta } from "@/lib/data/collections";
 import {
   entryDisplayDate,
   formatEntryDate,
-  type AdminEntryListItem,
-} from "@/lib/entry-utils";
+} from "@/lib/editor/format/entry";
+import type { AdminEntryListItem } from "@/lib/editor/types/entry";
 import type {
   AdminSeriesDetail,
   EntrySeriesMembership,
-} from "@/lib/series-types";
+} from "@/lib/editor/types/series";
 
 type PostView = "collection" | "date" | "series";
 
@@ -38,10 +38,11 @@ const VIEW_OPTIONS: { value: PostView; label: string }[] = [
   { value: "series", label: "Series" },
 ];
 
-function sortEntriesByDate(entries: AdminEntryListItem[]): AdminEntryListItem[] {
+function sortEntriesByDate(
+  entries: AdminEntryListItem[],
+): AdminEntryListItem[] {
   return [...entries].sort(
-    (a, b) =>
-      entryDisplayDate(b).getTime() - entryDisplayDate(a).getTime(),
+    (a, b) => entryDisplayDate(b).getTime() - entryDisplayDate(a).getTime(),
   );
 }
 
@@ -94,16 +95,18 @@ export function AdminDashboard({
         href: `/series/${item.slug}`,
         entries: item.entries.map((entry) => {
           const full = entries.find((candidate) => candidate.id === entry.id);
-          return full ?? {
-            id: entry.id,
-            slug: entry.slug,
-            title: entry.title,
-            body: "",
-            collection: entry.collection,
-            status: entry.status,
-            publishedAt: null,
-            createdAt: new Date(),
-          };
+          return (
+            full ?? {
+              id: entry.id,
+              slug: entry.slug,
+              title: entry.title,
+              body: "",
+              collection: entry.collection,
+              status: entry.status,
+              publishedAt: null,
+              createdAt: new Date(),
+            }
+          );
         }),
       };
     });
@@ -148,7 +151,11 @@ export function AdminDashboard({
           </h2>
 
           {entries.length > 0 && (
-            <div className="admin-view-toggle" role="tablist" aria-label="Group posts by">
+            <div
+              className="admin-view-toggle"
+              role="tablist"
+              aria-label="Group posts by"
+            >
               {VIEW_OPTIONS.map((option) => (
                 <button
                   key={option.value}

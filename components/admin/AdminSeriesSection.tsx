@@ -19,14 +19,17 @@ import { NewSeriesModal } from "@/components/editor/admin/NewSeriesModal";
 import { useEditor } from "@/components/editor/admin/EditorContext";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { ModalPortal } from "@/components/ui/ModalPortal";
-import { getCollectionMeta, isCollectionKey } from "@/lib/collections";
-import {
-  entryDisplayDate,
-  type AdminEntryListItem,
-} from "@/lib/entry-utils";
-import type { AdminSeriesDetail, AdminSeriesEntry } from "@/lib/series-types";
+import { getCollectionMeta, isCollectionKey } from "@/lib/data/collections";
+import { entryDisplayDate } from "@/lib/editor/format/entry";
+import type { AdminEntryListItem } from "@/lib/editor/types/entry";
+import type {
+  AdminSeriesDetail,
+  AdminSeriesEntry,
+} from "@/lib/editor/types/series";
 
-function entryToSeriesEntry(entry: AdminEntryListItem): AdminSeriesEntry | null {
+function entryToSeriesEntry(
+  entry: AdminEntryListItem,
+): AdminSeriesEntry | null {
   if (!isCollectionKey(entry.collection)) {
     return null;
   }
@@ -117,7 +120,10 @@ type SeriesPostRowProps = {
   isBusy: boolean;
   isFirst: boolean;
   isLast: boolean;
-  onDragStart: (entryId: string, event: React.DragEvent<HTMLDivElement>) => void;
+  onDragStart: (
+    entryId: string,
+    event: React.DragEvent<HTMLDivElement>,
+  ) => void;
   onDragOver: (entryId: string, event: React.DragEvent<HTMLLIElement>) => void;
   onDragLeave: () => void;
   onDrop: (entryId: string, event: React.DragEvent<HTMLLIElement>) => void;
@@ -491,10 +497,7 @@ function EditSeriesModalContent({
   const hasChanges = hasInfoChanges || hasPostsChanges;
 
   const entryDatesById = useMemo(
-    () =>
-      new Map(
-        entries.map((entry) => [entry.id, entryDisplayDate(entry)]),
-      ),
+    () => new Map(entries.map((entry) => [entry.id, entryDisplayDate(entry)])),
     [entries],
   );
 
@@ -740,168 +743,168 @@ function EditSeriesModalContent({
   return (
     <ModalPortal>
       <div className="entry-series-modal-root" role="presentation">
-      <button
-        type="button"
-        className="entry-series-modal-backdrop"
-        aria-label="Close edit series dialog"
-        disabled={isBusy}
-        onClick={() => void handleClose()}
-      />
+        <button
+          type="button"
+          className="entry-series-modal-backdrop"
+          aria-label="Close edit series dialog"
+          disabled={isBusy}
+          onClick={() => void handleClose()}
+        />
 
-      <div
-        className="entry-series-modal-panel entry-series-modal-panel-edit"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-      >
-        <header className="entry-series-modal-header">
-          <h2 id={titleId} className="font-heading text-lg tracking-tight">
-            Edit series
-          </h2>
-          <button
-            type="button"
-            onClick={() => void handleClose()}
-            className="admin-editor-modal-close"
-            aria-label="Close"
-            disabled={isBusy}
-          >
-            <X size={20} strokeWidth={1.75} aria-hidden />
-          </button>
-        </header>
-
-        <div className="entry-series-modal-body">
-          <details className="admin-series-modal-section" open>
-            <summary className="admin-series-modal-section-summary">
-              <span>Info</span>
-              <ChevronDown
-                className="admin-series-modal-section-chevron"
-                size={18}
-                strokeWidth={1.75}
-                aria-hidden
-              />
-            </summary>
-
-            <div className="admin-series-form mt-4">
-              <div className="admin-series-form-field">
-                <label
-                  htmlFor={`series-title-${series.id}`}
-                  className="admin-series-form-label"
-                >
-                  Title
-                </label>
-                <input
-                  id={`series-title-${series.id}`}
-                  type="text"
-                  value={title}
-                  onChange={(event) => setTitle(event.target.value)}
-                  className="admin-series-form-input"
-                  required
-                />
-              </div>
-
-              <div className="admin-series-form-field">
-                <label
-                  htmlFor={`series-description-${series.id}`}
-                  className="admin-series-form-label"
-                >
-                  Description
-                </label>
-                <textarea
-                  id={`series-description-${series.id}`}
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
-                  className="admin-series-form-textarea"
-                  rows={3}
-                />
-              </div>
-
-              <label className="admin-series-form-checkbox">
-                <input
-                  type="checkbox"
-                  checked={customOrder}
-                  onChange={(event) => setCustomOrder(event.target.checked)}
-                />
-                Custom order
-              </label>
-
-              {saveError ? (
-                <p className="admin-editor-save-error">{saveError}</p>
-              ) : null}
-
-              {hasChanges ? (
-                <div className="admin-series-form-actions">
-                  <button
-                    type="button"
-                    onClick={handleClearChanges}
-                    disabled={isBusy}
-                    className="admin-new-post-button"
-                  >
-                    Clear changes
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          </details>
-
-          <EditSeriesPostsSection
-            localEntries={displayedEntries}
-            customOrder={customOrder}
-            entries={entries}
-            disabled={isBusy}
-            onAddEntry={handleAddEntry}
-            onRemoveEntry={handleRemoveEntry}
-            onReorderEntries={handleReorderEntries}
-            onNewPost={handleNewPost}
-          />
-
-          <section className="admin-series-danger-zone">
-            <h3 className="font-heading text-lg tracking-tight text-[var(--foreground)]">
-              Delete series
-            </h3>
-            <label className="admin-series-form-checkbox mt-3">
-              <input
-                type="checkbox"
-                checked={deleteEntries}
-                onChange={(event) => setDeleteEntries(event.target.checked)}
-              />
-              Also delete all posts in this series
-            </label>
+        <div
+          className="entry-series-modal-panel entry-series-modal-panel-edit"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={titleId}
+        >
+          <header className="entry-series-modal-header">
+            <h2 id={titleId} className="font-heading text-lg tracking-tight">
+              Edit series
+            </h2>
             <button
               type="button"
-              onClick={() => {
-                setDeleteError(null);
-                setIsDeleteOpen(true);
-              }}
-              className="admin-series-delete-button"
+              onClick={() => void handleClose()}
+              className="admin-editor-modal-close"
+              aria-label="Close"
               disabled={isBusy}
             >
-              Delete series
+              <X size={20} strokeWidth={1.75} aria-hidden />
             </button>
-          </section>
-        </div>
-      </div>
+          </header>
 
-      <ConfirmModal
-        isOpen={isDeleteOpen}
-        title="Delete series?"
-        message={
-          deleteEntries
-            ? `Delete “${series.title}” and all ${localEntries.length} post${localEntries.length === 1 ? "" : "s"} in it? This cannot be undone.`
-            : `Delete “${series.title}”? Posts will stay published.`
-        }
-        confirmLabel="Delete"
-        cancelLabel="Cancel"
-        tone="danger"
-        isPending={isDeleting}
-        error={deleteError}
-        onClose={() => {
-          if (!isDeleting) {
-            setIsDeleteOpen(false);
-            setDeleteError(null);
+          <div className="entry-series-modal-body">
+            <details className="admin-series-modal-section" open>
+              <summary className="admin-series-modal-section-summary">
+                <span>Info</span>
+                <ChevronDown
+                  className="admin-series-modal-section-chevron"
+                  size={18}
+                  strokeWidth={1.75}
+                  aria-hidden
+                />
+              </summary>
+
+              <div className="admin-series-form mt-4">
+                <div className="admin-series-form-field">
+                  <label
+                    htmlFor={`series-title-${series.id}`}
+                    className="admin-series-form-label"
+                  >
+                    Title
+                  </label>
+                  <input
+                    id={`series-title-${series.id}`}
+                    type="text"
+                    value={title}
+                    onChange={(event) => setTitle(event.target.value)}
+                    className="admin-series-form-input"
+                    required
+                  />
+                </div>
+
+                <div className="admin-series-form-field">
+                  <label
+                    htmlFor={`series-description-${series.id}`}
+                    className="admin-series-form-label"
+                  >
+                    Description
+                  </label>
+                  <textarea
+                    id={`series-description-${series.id}`}
+                    value={description}
+                    onChange={(event) => setDescription(event.target.value)}
+                    className="admin-series-form-textarea"
+                    rows={3}
+                  />
+                </div>
+
+                <label className="admin-series-form-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={customOrder}
+                    onChange={(event) => setCustomOrder(event.target.checked)}
+                  />
+                  Custom order
+                </label>
+
+                {saveError ? (
+                  <p className="admin-editor-save-error">{saveError}</p>
+                ) : null}
+
+                {hasChanges ? (
+                  <div className="admin-series-form-actions">
+                    <button
+                      type="button"
+                      onClick={handleClearChanges}
+                      disabled={isBusy}
+                      className="admin-new-post-button"
+                    >
+                      Clear changes
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            </details>
+
+            <EditSeriesPostsSection
+              localEntries={displayedEntries}
+              customOrder={customOrder}
+              entries={entries}
+              disabled={isBusy}
+              onAddEntry={handleAddEntry}
+              onRemoveEntry={handleRemoveEntry}
+              onReorderEntries={handleReorderEntries}
+              onNewPost={handleNewPost}
+            />
+
+            <section className="admin-series-danger-zone">
+              <h3 className="font-heading text-lg tracking-tight text-[var(--foreground)]">
+                Delete series
+              </h3>
+              <label className="admin-series-form-checkbox mt-3">
+                <input
+                  type="checkbox"
+                  checked={deleteEntries}
+                  onChange={(event) => setDeleteEntries(event.target.checked)}
+                />
+                Also delete all posts in this series
+              </label>
+              <button
+                type="button"
+                onClick={() => {
+                  setDeleteError(null);
+                  setIsDeleteOpen(true);
+                }}
+                className="admin-series-delete-button"
+                disabled={isBusy}
+              >
+                Delete series
+              </button>
+            </section>
+          </div>
+        </div>
+
+        <ConfirmModal
+          isOpen={isDeleteOpen}
+          title="Delete series?"
+          message={
+            deleteEntries
+              ? `Delete “${series.title}” and all ${localEntries.length} post${localEntries.length === 1 ? "" : "s"} in it? This cannot be undone.`
+              : `Delete “${series.title}”? Posts will stay published.`
           }
-        }}
-        onConfirm={handleDelete}
-      />
+          confirmLabel="Delete"
+          cancelLabel="Cancel"
+          tone="danger"
+          isPending={isDeleting}
+          error={deleteError}
+          onClose={() => {
+            if (!isDeleting) {
+              setIsDeleteOpen(false);
+              setDeleteError(null);
+            }
+          }}
+          onConfirm={handleDelete}
+        />
       </div>
     </ModalPortal>
   );
@@ -933,7 +936,10 @@ type AdminSeriesSectionProps = {
   entries: AdminEntryListItem[];
 };
 
-export function AdminSeriesSection({ series, entries }: AdminSeriesSectionProps) {
+export function AdminSeriesSection({
+  series,
+  entries,
+}: AdminSeriesSectionProps) {
   const router = useRouter();
   const [editingSeriesId, setEditingSeriesId] = useState<string | null>(null);
   const [isNewSeriesOpen, setIsNewSeriesOpen] = useState(false);
@@ -980,7 +986,9 @@ export function AdminSeriesSection({ series, entries }: AdminSeriesSectionProps)
       </div>
 
       {series.length === 0 ? (
-        <p className="mt-4 text-sm text-[var(--editor-muted)]">No series yet.</p>
+        <p className="mt-4 text-sm text-[var(--editor-muted)]">
+          No series yet.
+        </p>
       ) : (
         <ul className="mt-6 space-y-3">
           {series.map((item) => (

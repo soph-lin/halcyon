@@ -7,7 +7,7 @@ import { EntryEditButton } from "@/components/editor/admin/EntryEditButton";
 import { EntryBody } from "@/components/EntryBody";
 import { SeriesNav } from "@/components/SeriesNav";
 import { SiteNav } from "@/components/SiteNav";
-import { getCollectionMeta, isCollectionKey } from "@/lib/collections";
+import { getCollectionMeta, isCollectionKey } from "@/lib/data/collections";
 import {
   entryDisplayDate,
   formatEntryDate,

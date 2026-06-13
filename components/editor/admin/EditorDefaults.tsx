@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 import { useEditor } from "@/components/editor/admin/EditorContext";
-import type { CollectionKey } from "@/lib/collections";
+import type { CollectionKey } from "@/lib/data/collections";
 
 type EditorDefaultsProps = {
   collection?: CollectionKey;

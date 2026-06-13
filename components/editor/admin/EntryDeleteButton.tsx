@@ -7,7 +7,7 @@ import { Trash2 } from "lucide-react";
 import { deleteEntry } from "@/app/actions/entries";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { useEditor } from "@/components/editor/admin/EditorContext";
-import type { CollectionKey } from "@/lib/collections";
+import type { CollectionKey } from "@/lib/data/collections";
 
 type EntryDeleteButtonProps = {
   id: string;

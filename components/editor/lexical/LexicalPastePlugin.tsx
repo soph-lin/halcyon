@@ -10,7 +10,7 @@ import {
 } from "lexical";
 import { useEffect } from "react";
 
-import { sanitizeBodyHtml } from "@/lib/sanitize";
+import { sanitizeBodyHtml } from "@/lib/editor/format/sanitize";
 
 type LexicalPastePluginProps = {
   onDirty: () => void;

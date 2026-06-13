@@ -12,9 +12,9 @@ import {
   getCollectionMeta,
   isCollectionKey,
   type CollectionKey,
-} from "@/lib/collections";
-import type { AdminEntryListItem } from "@/lib/entry-utils";
-import type { EntrySeriesMembership } from "@/lib/series-types";
+} from "@/lib/data/collections";
+import type { AdminEntryListItem } from "@/lib/editor/types/entry";
+import type { EntrySeriesMembership } from "@/lib/editor/types/series";
 
 type AdminEntryRowProps = {
   entry: AdminEntryListItem;

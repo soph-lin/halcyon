@@ -1,12 +1,14 @@
 import type { Entry } from "@/lib/generated/prisma/client";
 
-import type { CollectionKey } from "@/lib/collections";
+import type { CollectionKey } from "@/lib/data/collections";
+import type {
+  AdminEntryListItem,
+  PublishedEntryListItem,
+} from "@/lib/editor/types/entry";
 import {
-  type AdminEntryListItem,
-  type PublishedEntryListItem,
   entryDisplayDate,
   formatEntryDate,
-} from "@/lib/entry-utils";
+} from "@/lib/editor/format/entry";
 import { prisma } from "@/lib/db/prisma";
 
 export type { AdminEntryListItem, PublishedEntryListItem };

@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 
-import { sanitizeBodyHtml } from "@/lib/sanitize";
+import { sanitizeBodyHtml } from "@/lib/editor/format/sanitize";
 
 type EntryBodyProps = {
   html: string;

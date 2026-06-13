@@ -1,4 +1,4 @@
-import { isCollectionKey } from "@/lib/collections";
+import { isCollectionKey } from "@/lib/data/collections";
 import { prisma } from "@/lib/db/prisma";
 import type {
   AdminSeriesDetail,
@@ -6,7 +6,7 @@ import type {
   EntrySeriesNavItem,
   SeriesEntryRef,
   SeriesListItem,
-} from "@/lib/series-types";
+} from "@/lib/editor/types/series";
 
 export type {
   AdminSeriesDetail,
@@ -14,7 +14,7 @@ export type {
   EntrySeriesNavItem,
   SeriesEntryRef,
   SeriesListItem,
-} from "@/lib/series-types";
+} from "@/lib/editor/types/series";
 
 const publishedEntryWhere = {
   status: "published" as const,

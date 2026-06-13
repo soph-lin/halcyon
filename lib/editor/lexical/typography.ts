@@ -18,8 +18,8 @@ import {
   $getLineBlock,
   getBlockTypographyDefaults,
   getCurrentBlockTypographyDefaults,
-} from "@/lib/editor/block-typography";
-import { getBlockType } from "@/lib/editor/block-type";
+} from "@/lib/editor/block/block-typography";
+import { getBlockType } from "@/lib/editor/block/block-type";
 
 export const DEFAULT_FONT_SIZE = 17;
 export const MIN_FONT_SIZE = 12;

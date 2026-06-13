@@ -17,9 +17,9 @@ import {
   createSeriesAndAddEntry,
 } from "@/app/actions/series";
 import { EditorModal } from "@/components/editor/admin/EditorModal";
-import type { CollectionKey } from "@/lib/collections";
+import type { CollectionKey } from "@/lib/data/collections";
 import type { EditorInitialValues } from "@/lib/editor/types";
-import type { PendingSeriesAssignment } from "@/lib/series-types";
+import type { PendingSeriesAssignment } from "@/lib/editor/types/series";
 
 type EditorSession = {
   mode: "create" | "edit";

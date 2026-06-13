@@ -6,7 +6,7 @@ import {
   MAX_FONT_SIZE,
   MIN_FONT_SIZE,
   type TextFormat,
-} from "@/lib/editor/typography";
+} from "@/lib/editor/lexical/typography";
 
 type TypographyToolbarProps = {
   fontSize: number;

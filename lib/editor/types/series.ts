@@ -1,4 +1,4 @@
-import type { CollectionKey } from "@/lib/collections";
+import type { CollectionKey } from "@/lib/data/collections";
 
 export type SeriesOption = {
   id: string;

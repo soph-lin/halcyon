@@ -7,8 +7,8 @@ import { Trash2 } from "lucide-react";
 
 import { deleteEntry } from "@/app/actions/entries";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
-import type { CollectionKey } from "@/lib/collections";
-import type { PublishedEntryListItem } from "@/lib/entry-utils";
+import type { CollectionKey } from "@/lib/data/collections";
+import type { PublishedEntryListItem } from "@/lib/editor/types/entry";
 
 type CollectionEntryRowProps = {
   collection: CollectionKey;

@@ -16,7 +16,7 @@ import {
   type TextNode,
 } from "lexical";
 
-import { getBlockType } from "@/lib/editor/block-type";
+import { getBlockType } from "@/lib/editor/block/block-type";
 
 const BODY_FONT_SIZE = 17;
 

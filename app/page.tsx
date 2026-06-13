@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ProfileAvatar } from "@/components/ProfileAvatar";
 import { SiteNav } from "@/components/SiteNav";
 import { isAdmin } from "@/lib/admin";
-import { COLLECTION_KEYS, getCollectionMeta } from "@/lib/collections";
+import { COLLECTION_KEYS, getCollectionMeta } from "@/lib/data/collections";
 import { getSiteSettings } from "@/lib/db/site-settings";
 
 export default async function Home() {

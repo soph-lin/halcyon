@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { isAdmin } from "@/lib/admin";
-import { isCollectionKey, type CollectionKey } from "@/lib/collections";
+import { isCollectionKey, type CollectionKey } from "@/lib/data/collections";
 import { prisma } from "@/lib/db/prisma";
 import { uniqueSlugForCollection } from "@/lib/db/slug";
 

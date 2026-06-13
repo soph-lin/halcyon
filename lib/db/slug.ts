@@ -1,4 +1,4 @@
-import type { CollectionKey } from "@/lib/collections";
+import type { CollectionKey } from "@/lib/data/collections";
 import { prisma } from "@/lib/db/prisma";
 
 export function slugify(title: string): string {
