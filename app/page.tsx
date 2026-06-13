@@ -19,10 +19,10 @@ export default async function Home() {
             <h1 className="font-heading text-3xl tracking-tight text-[var(--foreground)]">
               hi, i&apos;m ginkgo
             </h1>
-            <p className="mt-3 text-[var(--editor-muted)]">
+            <div className="mt-3 text-[var(--editor-muted)]">
               <p>currently working on a novel</p>
               <p>in the meantime, here are some other things to read</p>
-            </p>
+            </div>
           </div>
 
           <ProfileAvatar imageUrl={settings.profileImageUrl} isAdmin={admin} />
