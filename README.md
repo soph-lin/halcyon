@@ -37,7 +37,7 @@ Setup database (first time):
 
 ```bash
 pnpm db:generate    # Generate db
-pnpm db:migrate     # Make db match prisma
+pnpm db:migrate     # Track initial version of db for later updates
 pnpm db:seed        # (Optional) Seed db with sample posts
 ```
 
