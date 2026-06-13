@@ -1,8 +1,12 @@
 # Halcyon
 
-## About
-
 A lovely writing engine
+
+## Features
+
+- Handle posts all in one place in admin mode
+- Rich text editor that supports Notion-style writing and copying from Google Docs
+- Toggle between read-only and editing view using [v] key
 
 ## Architecture
 
