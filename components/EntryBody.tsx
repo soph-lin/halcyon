@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 import { sanitizeBodyHtml } from "@/lib/sanitize";
 
@@ -8,12 +8,17 @@ type EntryBodyProps = {
   html: string;
 };
 
-export function EntryBody({ html }: EntryBodyProps) {
-  const [safeHtml, setSafeHtml] = useState("");
+function useIsClient() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+}
 
-  useEffect(() => {
-    setSafeHtml(sanitizeBodyHtml(html));
-  }, [html]);
+export function EntryBody({ html }: EntryBodyProps) {
+  const isClient = useIsClient();
+  const safeHtml = isClient ? sanitizeBodyHtml(html) : "";
 
   if (!safeHtml) {
     return null;
