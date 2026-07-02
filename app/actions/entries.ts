@@ -6,6 +6,7 @@ import { isAdmin } from "@/lib/admin";
 import { isCollectionKey, type CollectionKey } from "@/lib/data/collections";
 import { prisma } from "@/lib/db/prisma";
 import { uniqueSlugForCollection } from "@/lib/db/slug";
+import { parsePublishDateInput } from "@/lib/editor/format/entry";
 
 export type SaveEntryInput = {
   mode: "create" | "edit";
@@ -13,6 +14,7 @@ export type SaveEntryInput = {
   title: string;
   body: string;
   entryId?: string;
+  publishedAt?: string;
 };
 
 export type SaveEntryResult =
@@ -44,6 +46,14 @@ export async function saveEntry(input: SaveEntryInput): Promise<SaveEntryResult>
 
   const body = input.body;
 
+  const parsedPublishedAt = input.publishedAt
+    ? parsePublishDateInput(input.publishedAt)
+    : null;
+
+  if (input.publishedAt && !parsedPublishedAt) {
+    return { ok: false, error: "Invalid publish date (use mm/dd/yyyy)" };
+  }
+
   try {
     if (input.mode === "edit") {
       if (!input.entryId) {
@@ -65,7 +75,7 @@ export async function saveEntry(input: SaveEntryInput): Promise<SaveEntryResult>
           body,
           collection: input.collection,
           status: "published",
-          publishedAt: existing.publishedAt ?? new Date(),
+          publishedAt: parsedPublishedAt ?? existing.publishedAt ?? new Date(),
         },
       });
 
@@ -92,7 +102,7 @@ export async function saveEntry(input: SaveEntryInput): Promise<SaveEntryResult>
         body,
         collection: input.collection,
         status: "published",
-        publishedAt: new Date(),
+        publishedAt: parsedPublishedAt ?? new Date(),
       },
     });
 

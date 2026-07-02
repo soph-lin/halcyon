@@ -62,6 +62,8 @@ export default async function EntryPage({ params }: EntryPageProps) {
                 slug={entry.slug}
                 title={entry.title}
                 body={entry.body}
+                publishedAt={entry.publishedAt}
+                createdAt={entry.createdAt}
               />
               <EntryDeleteButton
                 id={entry.id}

@@ -24,6 +24,7 @@ export type EditorSavePayload = {
 export type EditorInitialValues = {
   title?: string;
   body?: string;
+  publishedAt?: string;
 };
 
 export type WritingEditorProps = {

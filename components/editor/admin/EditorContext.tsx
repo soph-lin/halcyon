@@ -19,6 +19,10 @@ import {
 } from "@/app/actions/series";
 import { EditorModal } from "@/components/editor/admin/EditorModal";
 import type { CollectionKey } from "@/lib/data/collections";
+import {
+  entryDisplayDate,
+  formatPublishDateInput,
+} from "@/lib/editor/format/entry";
 import type { EditorInitialValues } from "@/lib/editor/types";
 import type { PendingSeriesAssignment } from "@/lib/editor/types/series";
 import { shouldIgnoreViewToggle } from "@/lib/editor/lexical/editor-shortcuts";
@@ -37,6 +41,8 @@ export type OpenEditEntryInput = {
   slug: string;
   title: string;
   body: string;
+  publishedAt: Date | null;
+  createdAt: Date;
 };
 
 type EditorContextValue = {
@@ -151,7 +157,11 @@ export function EditorProvider({
       setSession({
         mode: "create",
         collection: defaultCollection ?? "blog",
-        initialValues: { title: "", body: "" },
+        initialValues: {
+          title: "",
+          body: "",
+          publishedAt: formatPublishDateInput(new Date()),
+        },
       });
     },
     [defaultCollection],
@@ -168,6 +178,12 @@ export function EditorProvider({
       initialValues: {
         title: entry.title,
         body: entry.body,
+        publishedAt: formatPublishDateInput(
+          entryDisplayDate({
+            publishedAt: entry.publishedAt,
+            createdAt: entry.createdAt,
+          }),
+        ),
       },
     });
   }, []);
@@ -189,6 +205,7 @@ export function EditorProvider({
       title: string;
       body: string;
       collection: CollectionKey;
+      publishedAt: string;
     }) => {
       if (!session) {
         return;
@@ -202,6 +219,7 @@ export function EditorProvider({
         title: payload.title,
         body: payload.body,
         entryId: session.entryId,
+        publishedAt: payload.publishedAt,
       });
 
       if (!result.ok) {

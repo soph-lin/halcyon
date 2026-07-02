@@ -94,6 +94,8 @@ export function AdminEntryRow({
             slug={entry.slug}
             title={entry.title}
             body={entry.body}
+            publishedAt={entry.publishedAt}
+            createdAt={entry.createdAt}
           />
           <button
             type="button"

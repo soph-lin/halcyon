@@ -14,6 +14,9 @@ import {
   getCollectionMeta,
   type CollectionKey,
 } from "@/lib/data/collections";
+import {
+  formatPublishDateInput,
+} from "@/lib/editor/format/entry";
 import type {
   EditorInitialValues,
   EditorSavePayload,
@@ -24,6 +27,7 @@ import { useBodyScrollLock } from "@/components/ui/useBodyScrollLock";
 
 export type EditorModalSavePayload = EditorSavePayload & {
   collection: CollectionKey;
+  publishedAt: string;
 };
 
 type EditorModalProps = {
@@ -56,6 +60,9 @@ export function EditorModal({
   const titleId = useId();
   const [collection, setCollection] =
     useState<CollectionKey>(initialCollection);
+  const [publishedAt, setPublishedAt] = useState(
+    () => initialValues?.publishedAt ?? formatPublishDateInput(new Date()),
+  );
   const seriesPicker = useEditorSeriesPicker({
     entryId,
     pendingSeries,
@@ -64,6 +71,17 @@ export function EditorModal({
   });
 
   useBodyScrollLock(isOpen);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    setCollection(initialCollection);
+    setPublishedAt(
+      initialValues?.publishedAt ?? formatPublishDateInput(new Date()),
+    );
+  }, [initialCollection, initialValues?.publishedAt, isOpen]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -95,9 +113,10 @@ export function EditorModal({
       await onSave({
         ...payload,
         collection,
+        publishedAt,
       });
     },
-    [collection, onSave],
+    [collection, onSave, publishedAt],
   );
 
   if (!isOpen) {
@@ -147,6 +166,17 @@ export function EditorModal({
                         </option>
                       ))}
                     </select>
+                  </label>
+                  <label className="admin-editor-meta-field">
+                    <span>publish date</span>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="mm/dd/yyyy"
+                      value={publishedAt}
+                      onChange={(event) => setPublishedAt(event.target.value)}
+                      className="admin-editor-collection-select"
+                    />
                   </label>
                   <EditorSeriesSelect picker={seriesPicker} />
                 </div>
