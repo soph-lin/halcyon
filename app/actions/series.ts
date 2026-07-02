@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { isAdmin } from "@/lib/admin";
+import { COLLECTION_KEYS } from "@/lib/data/collections";
 import { prisma } from "@/lib/db/prisma";
 import { uniqueSlugForSeries } from "@/lib/db/slug";
 
@@ -10,12 +11,17 @@ export type SeriesActionResult =
   | { ok: true; slug: string; id: string }
   | { ok: false; error: string };
 
+function revalidateAllCollectionPaths() {
+  for (const key of COLLECTION_KEYS) {
+    revalidatePath(`/${key}`);
+  }
+}
+
 function revalidateSeriesPaths(slug: string) {
   revalidatePath("/series");
   revalidatePath(`/series/${slug}`);
   revalidatePath("/admin/posts");
-  revalidatePath("/blog");
-  revalidatePath("/leaves");
+  revalidateAllCollectionPaths();
 }
 
 async function revalidateSeriesEntryPaths(seriesId: string) {
@@ -256,8 +262,7 @@ export async function deleteSeries(input: {
       }
 
       revalidatePath("/");
-      revalidatePath("/blog");
-      revalidatePath("/leaves");
+      revalidateAllCollectionPaths();
     } else {
       await revalidateSeriesEntryPaths(input.seriesId);
     }

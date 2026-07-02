@@ -5,7 +5,9 @@ import {
 
 const ALLOWED_TAGS = new Set<string>(ALLOWED_BODY_TAGS);
 
-const ALLOWED_STYLE_PROPERTIES = new Set(["font-size"]);
+const ALLOWED_STYLE_PROPERTIES = new Set(["font-size", "white-space"]);
+
+const WHITE_SPACE_VALUES = new Set(["pre", "pre-wrap", "break-spaces"]);
 
 function isAllowedTag(tag: string): tag is AllowedBodyTag {
   return ALLOWED_TAGS.has(tag);
@@ -32,6 +34,10 @@ function sanitizeStyle(styleValue: string | null): string | null {
       const value = declaration.slice(separator + 1).trim();
 
       if (!ALLOWED_STYLE_PROPERTIES.has(property) || !value) {
+        return null;
+      }
+
+      if (property === "white-space" && !WHITE_SPACE_VALUES.has(value)) {
         return null;
       }
 
@@ -76,7 +82,7 @@ function cleanNode(node: Node, doc: Document): Node | DocumentFragment | null {
     }
   }
 
-  if (tag === "span") {
+  if (tag === "span" || tag === "pre") {
     const style = sanitizeStyle(element.getAttribute("style"));
     if (style) {
       cleanElement.setAttribute("style", style);

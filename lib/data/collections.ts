@@ -1,4 +1,4 @@
-export const COLLECTION_KEYS = ["blog", "leaves"] as const;
+export const COLLECTION_KEYS = ["blog", "leaves", "dreamon"] as const;
 
 export type CollectionKey = (typeof COLLECTION_KEYS)[number];
 
@@ -19,7 +19,23 @@ export const COLLECTIONS: Record<CollectionKey, CollectionMeta> = {
     title: "little library",
     href: "/leaves",
   },
+  dreamon: {
+    key: "dreamon",
+    title: "dreamon",
+    href: "/dreamon",
+  },
 };
+
+/** Collections whose index page lists a linked series instead of collection entries. */
+export const COLLECTION_SERIES_SLUG: Partial<Record<CollectionKey, string>> = {
+  dreamon: "dreamon",
+};
+
+export function getSeriesSlugForCollection(
+  key: CollectionKey,
+): string | undefined {
+  return COLLECTION_SERIES_SLUG[key];
+}
 
 export function isCollectionKey(value: string): value is CollectionKey {
   return COLLECTION_KEYS.includes(value as CollectionKey);

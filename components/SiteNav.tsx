@@ -4,10 +4,14 @@ import {
   SiteNavDashboardLink,
   SiteNavSignOutLink,
 } from "@/components/SiteNavAdminChrome";
-import { COLLECTIONS } from "@/lib/data/collections";
+import {
+  COLLECTION_KEYS,
+  COLLECTIONS,
+  type CollectionKey,
+} from "@/lib/data/collections";
 
 type SiteNavProps = {
-  active?: "home" | "blog" | "leaves";
+  active?: "home" | CollectionKey;
 };
 
 export function SiteNav({ active }: SiteNavProps) {
@@ -25,20 +29,16 @@ export function SiteNav({ active }: SiteNavProps) {
         </div>
 
         <nav className="flex items-center gap-5" aria-label="Site">
-          <Link
-            href={COLLECTIONS.blog.href}
-            className={navLinkClass(active === "blog")}
-            aria-current={active === "blog" ? "page" : undefined}
-          >
-            {COLLECTIONS.blog.title}
-          </Link>
-          <Link
-            href={COLLECTIONS.leaves.href}
-            className={navLinkClass(active === "leaves")}
-            aria-current={active === "leaves" ? "page" : undefined}
-          >
-            {COLLECTIONS.leaves.title}
-          </Link>
+          {COLLECTION_KEYS.map((key) => (
+            <Link
+              key={key}
+              href={COLLECTIONS[key].href}
+              className={navLinkClass(active === key)}
+              aria-current={active === key ? "page" : undefined}
+            >
+              {COLLECTIONS[key].title}
+            </Link>
+          ))}
         </nav>
       </div>
 

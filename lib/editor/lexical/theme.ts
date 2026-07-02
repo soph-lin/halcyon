@@ -15,6 +15,7 @@ export const lexicalTheme: EditorThemeClasses = {
     listitem: "editor-li",
   },
   link: "editor-link",
+  code: "editor-code-block",
   text: {
     bold: "editor-bold",
     italic: "editor-italic",

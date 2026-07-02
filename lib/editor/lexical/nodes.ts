@@ -7,5 +7,5 @@ export const editorNodes = [
   QuoteNode,
   ListNode,
   ListItemNode,
-  LinkNode,
+  LinkNode
 ];

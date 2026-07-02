@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { SeriesEntryList } from "@/components/SeriesEntryList";
 import { SiteNav } from "@/components/SiteNav";
+import {
+  COLLECTION_SERIES_SLUG,
+  type CollectionKey,
+} from "@/lib/data/collections";
 import { getPublishedSeries } from "@/lib/db/series";
 
 type SeriesPageProps = {
@@ -16,9 +21,13 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
     notFound();
   }
 
+  const linkedCollection = (
+    Object.entries(COLLECTION_SERIES_SLUG) as [CollectionKey, string][]
+  ).find(([, seriesSlug]) => seriesSlug === series.slug)?.[0];
+
   return (
     <div className="min-h-full">
-      <SiteNav active="home" />
+      <SiteNav active={linkedCollection ?? "home"} />
 
       <main className="mx-auto max-w-[42rem] px-6 py-10 sm:py-14">
         <Link
@@ -39,34 +48,10 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
           ) : null}
         </header>
 
-        {series.customOrder ? (
-          <ol className="mt-8 space-y-3">
-            {series.entries.map((entry, index) => (
-              <li key={entry.id} className="entry-list-item">
-                <Link href={entry.href} className="entry-list-link group">
-                  <span className="text-sm tabular-nums text-[var(--editor-muted)] group-hover:text-[var(--editor-accent)]">
-                    {index + 1}.
-                  </span>{" "}
-                  <span className="text-base text-[var(--foreground)] transition-colors group-hover:text-[var(--editor-accent)]">
-                    {entry.title}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <ul className="mt-8 space-y-3">
-            {series.entries.map((entry) => (
-              <li key={entry.id} className="entry-list-item">
-                <Link href={entry.href} className="entry-list-link group">
-                  <span className="text-base text-[var(--foreground)] transition-colors group-hover:text-[var(--editor-accent)]">
-                    {entry.title}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+        <SeriesEntryList
+          entries={series.entries}
+          customOrder={series.customOrder}
+        />
       </main>
     </div>
   );
